@@ -5,160 +5,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserva de Passeios - Trilheiros de Rondonópolis</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #000;
-    color: #fff;
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-  }
-  h1 {
-    color: #fff;
-    margin-bottom: 5px;
-  }
-  h2 {
-    margin-top: 0;
-  }
-  img.logo {
-    max-width: 200px;
-    margin-bottom: 20px;
-  }
-  .passeio {
-    border: 2px solid #fff;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 25px;
-  }
-  img.passeio-img {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 10px;
-  }
-  select, input[type=number] {
-    padding: 8px;
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  button {
-    padding: 12px 25px;
-    font-size: 16px;
-    margin: 10px 5px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-  }
-  button.copy {
-    background-color: #25D366;
-    color: #fff;
-  }
-  button.cartao {
-    background-color: #0070BA;
-    color: #fff;
-  }
-  button.whatsapp {
-    background-color: #128C7E;
-    color: #fff;
-  }
-  .valor {
-    font-size: 20px;
-    margin: 10px 0;
-  }
+body { font-family: Arial, sans-serif; background: #000; color: #fff; margin:0; padding:20px; text-align:center; }
+h1 { font-size:2em; color:#fff; margin-bottom:10px; }
+.logo { width:120px; max-width:50%; margin-bottom:15px; }
+.passeio { background:#111; padding:15px; border-radius:12px; margin-bottom:25px; box-shadow:0 0 15px rgba(255,255,255,0.1); }
+.passeio img { width:100%; border-radius:12px; margin-bottom:10px; }
+select, input[type=text], button { padding:12px; margin:5px 0; border-radius:6px; border:none; font-size:1em; width:90%; max-width:300px; }
+button { cursor:pointer; font-weight:bold; transition:0.2s; }
+button:hover { opacity:0.9; }
+#valorRio,#valorGui{ margin:10px 0; font-weight:bold; font-size:1.1em; }
+#restantesRio,#restantesGui{ font-weight:bold; margin:10px 0; color:#ffb74d; }
+@media (min-width:600px){
+  select, input[type=text], button { width:60%; max-width:400px; }
+}
 </style>
 </head>
 <body>
 
-<img src="https://i.imgur.com/MwHr761.png" alt="Logo Trilheiros de Rondonópolis" class="logo">
-<h1>Reserva de Passeios</h1>
-<h2>Trilheiros de Rondonópolis</h2>
+<img src="https://i.imgur.com/MwHr761.png" class="logo" alt="Trilheiros de Rondonópolis">
+<h1>Reserva de Passeios<br>Trilheiros de Rondonópolis</h1>
 
-<!-- Passeio Rio Cristalino -->
-<div class="passeio" id="rioCristalino">
-  <h2>💦 Passeio Rio Cristalino – Poxoréu/MT 🌿</h2>
-  <img src="https://i.imgur.com/sgiYZYh.jpeg" alt="Rio Cristalino" class="passeio-img">
-  <p>Dia 10 de dezembro dentro da Aldeia Dom Bosco, na TI Sangradouro. Um lugar com águas transparentes em tons azulados e energia única da natureza.</p>
-  <p>Incluso: transporte ida e volta, condutor local, seguro de vida e acesso ao local. Não incluso: alimentação.</p>
-  <label>Quantidade de vagas:</label>
-  <input type="number" id="quantidadeRio" min="1" max="25" value="1" onchange="atualizarPagamento('rio')">
-  <br>
-  <label>Forma de pagamento:</label>
-  <select id="pagamentoRio" onchange="atualizarPagamento('rio')">
-    <option value="pix">PIX</option>
-    <option value="cartao">Cartão de Crédito</option>
-  </select>
-  <div class="valor" id="valorRio">R$ 385,00</div>
-  <div id="botoesRio">
-    <button class="copy" onclick="copiarPix('rio')">Clique aqui para copiar a chave PIX</button>
-  </div>
-  <button class="whatsapp" onclick="enviarWhatsApp('rio')">Enviar Comprovante pelo WhatsApp</button>
+<!-- Rio Cristalino -->
+<div class="passeio">
+<img src="https://i.imgur.com/sgiYZYh.jpeg" alt="Rio Cristalino">
+<h2>💦 Passeio Rio Cristalino – Poxoréu/MT 🌿</h2>
+<p>Dia 10 de dezembro, uma experiência incrível no Rio Cristalino, dentro da Aldeia Dom Bosco, na TI Sangradouro. Um lugar com águas transparentes e energia única da natureza!</p>
+<p>Inclui transporte ida e volta, condutor local, seguro de vida e acesso ao local. Alimentação não inclusa.</p>
+<p id="restantesRio">Vagas restantes: 25</p>
+<input type="text" id="nomeRio" placeholder="Digite seu nome">
+<select id="quantidadeRio" onchange="atualizarPagamento('rio')">
+<option value="1">1 vaga</option>
+<option value="2">2 vagas</option>
+<option value="3">3 vagas</option>
+<option value="4">4 vagas</option>
+<option value="5">5 vagas</option>
+<option value="6">6 vagas</option>
+<option value="7">7 vagas</option>
+<option value="8">8 vagas</option>
+<option value="9">9 vagas</option>
+<option value="10">10 vagas</option>
+<option value="11">11 vagas</option>
+<option value="12">12 vagas</option>
+</select>
+<div>
+<button onclick="selecionarPagamento('rio','pix')">PIX</button>
+<button onclick="selecionarPagamento('rio','cartao')">Cartão de Crédito</button>
+</div>
+<p id="valorRio">Valor total: R$ 385</p>
+<button id="pixRioBtn" onclick="copiarPix('rio')" style="display:none;">Copiar PIX: trilheiros.roomt@gmail.com</button>
+<a id="cartaoRioBtn" href="#" target="_blank" style="display:none;"><button>Ir para pagamento Cartão</button></a>
+<br>
+<button onclick="enviarWhatsApp('rio')">Enviar confirmação no WhatsApp</button>
 </div>
 
-<!-- Passeio Guiratinga -->
-<div class="passeio" id="guiratinga">
-  <h2>Embarque para Guiratinga – MT 🌿</h2>
-  <img src="https://i.imgur.com/HXbWpEc.png" alt="Guiratinga" class="passeio-img">
-  <p>Dia 7 de dezembro, vamos visitar a Cachoeira do Borá, Vila Coreia e Museu Histórico de Guiratinga.</p>
-  <p>Incluso: transporte, almoço, seguro de vida e acesso aos atrativos.</p>
-  <label>Quantidade de vagas:</label>
-  <input type="number" id="quantidadeGui" min="1" max="28" value="1" onchange="atualizarPagamento('guiratinga')">
-  <br>
-  <label>Forma de pagamento:</label>
-  <select id="pagamentoGui" onchange="atualizarPagamento('guiratinga')">
-    <option value="pix">PIX</option>
-    <option value="cartao">Cartão de Crédito</option>
-  </select>
-  <div class="valor" id="valorGui">R$ 275,00</div>
-  <div id="botoesGui">
-    <button class="copy" onclick="copiarPix('guiratinga')">Clique aqui para copiar a chave PIX</button>
-  </div>
-  <button class="whatsapp" onclick="enviarWhatsApp('guiratinga')">Enviar Comprovante pelo WhatsApp</button>
+<!-- Guiratinga -->
+<div class="passeio">
+<img src="https://i.imgur.com/HXbWpEc.png" alt="Guiratinga">
+<h2>🏞 Passeio Guiratinga – MT</h2>
+<p>Dia 7 de dezembro visitaremos a Cachoeira do Borá, a charmosa Vila Coreia e o Museu Histórico de Guiratinga. Incluso transporte, almoço, seguro de vida e acesso aos atrativos.</p>
+<p id="restantesGui">Vagas restantes: 28</p>
+<input type="text" id="nomeGui" placeholder="Digite seu nome">
+<select id="quantidadeGui" onchange="atualizarPagamento('gui')">
+<option value="1">1 vaga</option>
+<option value="2">2 vagas</option>
+<option value="3">3 vagas</option>
+<option value="4">4 vagas</option>
+<option value="5">5 vagas</option>
+<option value="6">6 vagas</option>
+<option value="7">7 vagas</option>
+<option value="8">8 vagas</option>
+<option value="9">9 vagas</option>
+<option value="10">10 vagas</option>
+<option value="11">11 vagas</option>
+<option value="12">12 vagas</option>
+</select>
+<div>
+<button onclick="selecionarPagamento('gui','pix')">PIX</button>
+<button onclick="selecionarPagamento('gui','cartao')">Cartão de Crédito</button>
+</div>
+<p id="valorGui">Valor total: R$ 275</p>
+<button id="pixGuiBtn" onclick="copiarPix('gui')" style="display:none;">Copiar PIX: trilheiros.roomt@gmail.com</button>
+<a id="cartaoGuiBtn" href="#" target="_blank" style="display:none;"><button>Ir para pagamento Cartão</button></a>
+<br>
+<button onclick="enviarWhatsApp('gui')">Enviar confirmação no WhatsApp</button>
 </div>
 
 <script>
-const valores = {
-  rio: { pix: 385, cartao: 399 },
-  guiratinga: { pix: 275, cartao: 289 }
-};
-
-const pixChave = "trilheiros.roomt@gmail.com";
-const cartaoLink = {
-  rio: "https://mpago.li/1DhBcxg",
-  guiratinga: "https://mpago.li/1YawPEd"
-};
+const precos = { rio:{pix:385,cartao:399}, gui:{pix:275,cartao:289} };
+const cartaoLinks = { rio:"https://link.mercadopago.com.br/trilheirosderoo", gui:"https://mpago.li/1DhBcxg" };
+const vagasRestantes = { rio:25, gui:28 };
 
 function atualizarPagamento(passeio){
-  const quantidade = parseInt(document.getElementById(passeio==='rio' ? 'quantidadeRio' : 'quantidadeGui').value);
-  const forma = document.getElementById(passeio==='rio' ? 'pagamentoRio' : 'pagamentoGui').value;
-  const valorTotal = valores[passeio][forma] * quantidade;
-  
-  document.getElementById(passeio==='rio' ? 'valorRio' : 'valorGui').innerText = `R$ ${valorTotal.toFixed(2)}`;
-  
-  const botoesDiv = document.getElementById(passeio==='rio' ? 'botoesRio' : 'botoesGui');
-  if(forma === 'pix'){
-    botoesDiv.innerHTML = `<button class="copy" onclick="copiarPix('${passeio}')">Clique aqui para copiar a chave PIX</button>`;
+  const quantidade = parseInt(document.getElementById('quantidade'+(passeio==='rio'?'Rio':'Gui')).value);
+  const valorEl = document.getElementById('valor'+(passeio==='rio'?'Rio':'Gui'));
+  valorEl.innerText = 'Valor total: R$ ' + (precos[passeio].pix*quantidade);
+}
+
+function selecionarPagamento(passeio,tipo){
+  const quantidade = parseInt(document.getElementById('quantidade'+(passeio==='rio'?'Rio':'Gui')).value);
+  const valorEl = document.getElementById('valor'+(passeio==='rio'?'Rio':'Gui'));
+  valorEl.innerText = 'Valor total: R$ ' + (precos[passeio][tipo]*quantidade);
+  if(tipo==='pix'){
+    document.getElementById('pix'+(passeio==='rio'?'RioBtn':'GuiBtn')).style.display='inline-block';
+    document.getElementById('cartao'+(passeio==='rio'?'RioBtn':'GuiBtn')).style.display='none';
   } else {
-    botoesDiv.innerHTML = `<button class="cartao" onclick="window.open('${cartaoLink[passeio]}','_blank')">Pagar com Cartão de Crédito</button>`;
+    const cartBtn = document.getElementById('cartao'+(passeio==='rio'?'RioBtn':'GuiBtn'));
+    cartBtn.href = cartaoLinks[passeio];
+    cartBtn.style.display='inline-block';
+    document.getElementById('pix'+(passeio==='rio'?'RioBtn':'GuiBtn')).style.display='none';
   }
 }
 
 function copiarPix(passeio){
-  navigator.clipboard.writeText(pixChave);
-  alert("Chave PIX copiada: " + pixChave);
+  navigator.clipboard.writeText('trilheiros.roomt@gmail.com');
+  alert('Chave PIX copiada!');
 }
 
 function enviarWhatsApp(passeio){
-  const nome = prompt("Digite seu nome:");
-  const quantidade = parseInt(document.getElementById(passeio==='rio' ? 'quantidadeRio' : 'quantidadeGui').value);
-  const forma = document.getElementById(passeio==='rio' ? 'pagamentoRio' : 'pagamentoGui').value;
-  const valorTotal = valores[passeio][forma] * quantidade;
-  const texto = `Olá, acabei de reservar ${quantidade} vaga(s) no passeio ${passeio==='rio' ? 'Rio Cristalino' : 'Guiratinga'}.\nNome: ${nome}\nValor total: R$ ${valorTotal.toFixed(2)}\nEnviei o comprovante.`;
-  const numero = "66996926174";
-  const link = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
-  window.open(link, "_blank");
+  const nome = document.getElementById('nome'+(passeio==='rio'?'Rio':'Gui')).value;
+  const quantidade = parseInt(document.getElementById('quantidade'+(passeio==='rio'?'Rio':'Gui')).value);
+  if(vagasRestantes[passeio]<quantidade){ alert('Não há vagas suficientes!'); return; }
+  const pixBtn = document.getElementById('pix'+(passeio==='rio'?'RioBtn':'GuiBtn'));
+  const forma = pixBtn.style.display==='inline-block'?'PIX':'Cartão de Crédito';
+  const valor = precos[passeio][forma.toLowerCase()]*quantidade;
+  const mensagem = `Olá, segue minha reserva do passeio ${passeio==='rio'?'Rio Cristalino':'Guiratinga'}.\nNome: ${nome}\nQuantidade de vagas: ${quantidade}\nForma de pagamento: ${forma}\nValor total: R$ ${valor}\nEnviei o comprovante.`;
+  const linkWhats = `https://wa.me/66996926174?text=${encodeURIComponent(mensagem)}`;
+  window.open(linkWhats,'_blank');
+  vagasRestantes[passeio]-=quantidade;
+  document.getElementById('restantes'+(passeio==='rio'?'Rio':'Gui')).innerText='Vagas restantes: '+vagasRestantes[passeio];
+  if(vagasRestantes[passeio]<=0){ alert('Vagas esgotadas!'); }
 }
+
+document.addEventListener("DOMContentLoaded", function(){
+  document.getElementById('restantesRio').innerText='Vagas restantes: '+vagasRestantes['rio'];
+  document.getElementById('restantesGui').innerText='Vagas restantes: '+vagasRestantes['gui'];
+});
 </script>
 
 </body>
 </html>
-
-
