@@ -18,6 +18,7 @@
   .vagas { font-weight:bold; margin:5px; }
   .esgotado { color:#f00; font-weight:bold; }
   .total { font-size:1.2em; font-weight:bold; margin:10px 0; }
+  .descricao-final { font-size:0.9em; color:#ccc; margin-top:10px; }
 </style>
 </head>
 <body>
@@ -31,7 +32,6 @@
   <img src="https://i.imgur.com/sgiYZYh.jpeg" alt="Rio Cristalino">
   <p>Dia 10 de dezembro vamos novamente viver essa experiência incrível no Rio Cristalino, dentro da Aldeia Dom Bosco, na TI Sangradouro. Um lugar com águas transparentes em tons azulados e uma energia única da natureza!</p>
   <p>Inclui: Transporte ida/volta, condutor local, seguro de vida e acesso ao local.</p>
-  <p>Valores: R$ 385,00 via PIX / R$ 399,00 cartão de crédito em até 10x</p>
   <p>Vagas restantes: <span class="vagas" id="vagasRio"></span></p>
 
   <label>Quantidade de vagas:</label>
@@ -43,11 +43,19 @@
     <option value="5">5 vagas</option>
   </select>
 
+  <p>Método de pagamento:</p>
+  <select id="pagamentoRio">
+    <option value="pix">PIX - R$ 385,00</option>
+    <option value="cartao">Cartão - R$ 399,00</option>
+  </select>
+
   <p class="total">Total: R$ <span id="valorRio">385</span></p>
 
-  <button class="btn btn-pix" onclick="copiarPix('rio')">PIX</button>
+  <button class="btn btn-pix" onclick="copiarPix('rio')">Copiar PIX</button>
   <button class="btn btn-cartao" onclick="window.open('https://mpago.li/1DhBcxg','_blank')">Cartão de crédito</button>
   <button class="btn btn-whatsapp" onclick="enviarWhatsApp('rio')">Enviar WhatsApp</button>
+
+  <p class="descricao-final">Após realizar o pagamento, clique no botão WhatsApp para enviar sua confirmação e comprovante da reserva.</p>
 </div>
 
 <!-- Passeio Guiratinga -->
@@ -56,7 +64,6 @@
   <img src="https://i.imgur.com/HXbWpEc.png" alt="Guiratinga">
   <p>Embarque com a gente para Guiratinga no dia 7 de dezembro! Vamos visitar a deslumbrante Cachoeira do Borá, conhecer a charmosa Vila Coreia e explorar o Museu Histórico de Guiratinga.</p>
   <p>Inclui: Transporte, almoço, seguro de vida e acesso aos atrativos.</p>
-  <p>Valores: R$ 275,00 via PIX / R$ 289,00 no cartão de crédito em até 10x</p>
   <p>Vagas restantes: <span class="vagas" id="vagasGui"></span></p>
 
   <label>Quantidade de vagas:</label>
@@ -68,32 +75,47 @@
     <option value="5">5 vagas</option>
   </select>
 
+  <p>Método de pagamento:</p>
+  <select id="pagamentoGui">
+    <option value="pix">PIX - R$ 275,00</option>
+    <option value="cartao">Cartão - R$ 289,00</option>
+  </select>
+
   <p class="total">Total: R$ <span id="valorGui">275</span></p>
 
-  <button class="btn btn-pix" onclick="copiarPix('gui')">PIX</button>
+  <button class="btn btn-pix" onclick="copiarPix('gui')">Copiar PIX</button>
   <button class="btn btn-cartao" onclick="window.open('https://mpago.li/1YawPEd','_blank')">Cartão de crédito</button>
   <button class="btn btn-whatsapp" onclick="enviarWhatsApp('gui')">Enviar WhatsApp</button>
+
+  <p class="descricao-final">Após realizar o pagamento, clique no botão WhatsApp para enviar sua confirmação e comprovante da reserva.</p>
 </div>
 
 <script>
-// CONFIGURAÇÃO
-const masterKey = "COLE_SUA_MASTER_KEY_AQUI";
-const binRio = "URL_DO_BIN_RIO";
-const binGui = "URL_DO_BIN_GUI";
 const pix = "trilheiros.roomt@gmail.com";
 
 let vagasRio = 25;
 let vagasGui = 28;
 
-// Atualiza valor total automaticamente
-document.getElementById("quantidadeRio").addEventListener("change",()=> {
-  const q = parseInt(document.getElementById("quantidadeRio").value);
-  document.getElementById("valorRio").textContent = 385 * q;
-});
-document.getElementById("quantidadeGui").addEventListener("change",()=> {
-  const q = parseInt(document.getElementById("quantidadeGui").value);
-  document.getElementById("valorGui").textContent = 275 * q;
-});
+function atualizarValor(passeio){
+  let quantidade, metodo, total;
+  if(passeio==="rio"){
+    quantidade = parseInt(document.getElementById("quantidadeRio").value);
+    metodo = document.getElementById("pagamentoRio").value;
+    total = metodo==="pix" ? 385*quantidade : 399*quantidade;
+    document.getElementById("valorRio").textContent = total;
+  } else {
+    quantidade = parseInt(document.getElementById("quantidadeGui").value);
+    metodo = document.getElementById("pagamentoGui").value;
+    total = metodo==="pix" ? 275*quantidade : 289*quantidade;
+    document.getElementById("valorGui").textContent = total;
+  }
+}
+
+// Atualiza valor ao alterar quantidade ou método
+document.getElementById("quantidadeRio").addEventListener("change",()=>atualizarValor('rio'));
+document.getElementById("pagamentoRio").addEventListener("change",()=>atualizarValor('rio'));
+document.getElementById("quantidadeGui").addEventListener("change",()=>atualizarValor('gui'));
+document.getElementById("pagamentoGui").addEventListener("change",()=>atualizarValor('gui'));
 
 // PIX copiar
 function copiarPix(passeio){
@@ -101,27 +123,29 @@ function copiarPix(passeio){
   alert("Chave PIX copiada!");
 }
 
-// WhatsApp com mensagem automática
+// WhatsApp
 function enviarWhatsApp(passeio){
-  let q, nome, valor;
+  let quantidade, valor, metodo, nome;
   nome = prompt("Digite seu nome completo:");
   if(!nome) return alert("Nome obrigatório!");
 
   if(passeio==="rio"){
-    q = parseInt(document.getElementById("quantidadeRio").value);
-    valor = 385*q;
-    if(q>vagasRio) return alert("Vagas insuficientes!");
-    vagasRio -= q;
+    quantidade = parseInt(document.getElementById("quantidadeRio").value);
+    metodo = document.getElementById("pagamentoRio").value;
+    valor = metodo==="pix" ? 385*quantidade : 399*quantidade;
+    if(quantidade>vagasRio) return alert("Vagas insuficientes!");
+    vagasRio -= quantidade;
     document.getElementById("vagasRio").textContent = vagasRio;
   } else {
-    q = parseInt(document.getElementById("quantidadeGui").value);
-    valor = 275*q;
-    if(q>vagasGui) return alert("Vagas insuficientes!");
-    vagasGui -= q;
+    quantidade = parseInt(document.getElementById("quantidadeGui").value);
+    metodo = document.getElementById("pagamentoGui").value;
+    valor = metodo==="pix" ? 275*quantidade : 289*quantidade;
+    if(quantidade>vagasGui) return alert("Vagas insuficientes!");
+    vagasGui -= quantidade;
     document.getElementById("vagasGui").textContent = vagasGui;
   }
 
-  const msg = `Olá, confirmo minha reserva no passeio ${passeio==="rio"?"Rio Cristalino":"Guiratinga"}.\nNome: ${nome}\nQuantidade de vagas: ${q}\nValor total: R$${valor}\nSegue comprovante.`;
+  const msg = `Olá, confirmo minha reserva no passeio ${passeio==="rio"?"Rio Cristalino":"Guiratinga"}.\nNome: ${nome}\nQuantidade de vagas: ${quantidade}\nValor total: R$${valor}\nSegue comprovante.`;
   const whatsappLink = `https://wa.me/556699926174?text=${encodeURIComponent(msg)}`;
   window.open(whatsappLink,'_blank');
 
