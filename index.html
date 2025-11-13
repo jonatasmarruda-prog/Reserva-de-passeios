@@ -58,6 +58,13 @@
     margin: 10px 0;
     font-size: 1em;
   }
+  .btnCartao {
+    background-color: #0070BA;
+    margin-top: 5px;
+  }
+  .btnCartao:hover {
+    background-color: #005C99;
+  }
 </style>
 </head>
 <body>
@@ -93,6 +100,8 @@
   <p class="info">Valor total: R$ <span id="valorRio">385</span></p>
 
   <button class="btn" onclick="copiarPix('rio')">Copiar chave PIX</button>
+  <button class="btn btnCartao" onclick="abrirCartao('rio')">Pagar com Cartão</button>
+  <p class="info">Após efetuar o pagamento, clique no botão abaixo para enviar seu comprovante via WhatsApp.</p>
   <button class="btn" onclick="enviarWhatsApp('rio')">Enviar comprovante via WhatsApp</button>
 
 </div>
@@ -125,14 +134,16 @@
   <p class="info">Valor total: R$ <span id="valorGui">275</span></p>
 
   <button class="btn" onclick="copiarPix('gui')">Copiar chave PIX</button>
+  <button class="btn btnCartao" onclick="abrirCartao('gui')">Pagar com Cartão</button>
+  <p class="info">Após efetuar o pagamento, clique no botão abaixo para enviar seu comprovante via WhatsApp.</p>
   <button class="btn" onclick="enviarWhatsApp('gui')">Enviar comprovante via WhatsApp</button>
 
 </div>
 
 <script>
 const valores = {
-  rio: { pix: 385, cartao: 399 },
-  gui: { pix: 275, cartao: 289 }
+  rio: { pix: 385, cartao: 399, linkCartao: 'https://mpago.li/1DhBcxg' },
+  gui: { pix: 275, cartao: 289, linkCartao: 'https://mpago.li/1YawPEd' }
 };
 
 const pixChaves = {
@@ -150,6 +161,12 @@ function atualizarValor(passeio) {
 function copiarPix(passeio) {
   let chave = pixChaves[passeio];
   navigator.clipboard.writeText(chave).then(() => alert('Chave PIX copiada: ' + chave));
+}
+
+function abrirCartao(passeio) {
+  let quantidade = document.getElementById(passeio === 'rio' ? 'quantidadeRio' : 'quantidadeGui').value;
+  let valor = valores[passeio][document.getElementById(passeio === 'rio' ? 'pagamentoRio' : 'pagamentoGui').value] * quantidade;
+  window.open(valores[passeio].linkCartao, '_blank');
 }
 
 function enviarWhatsApp(passeio) {
