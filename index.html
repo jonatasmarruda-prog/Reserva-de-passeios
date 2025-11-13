@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Trilheiros de Rondonópolis — Reservas</title>
+<style>
+  :root{--bg:#000;--card:#111;--muted:#ccc;--accent:#28a745}
+  body{margin:0;background:linear-gradient(180deg,#000,#0b0b0b);color:#fff;font-family:Arial,Helvetica,sans-serif}
+  .wrap{max-width:1100px;margin:18px auto;padding:18px}
+  header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+  header img.logo{width:64px;height:64px;object-fit:cover;border-radius:8px}
+  header h1{margin:0;font-size:1.6rem;letter-spacing:0.6px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,0.6);overflow:hidden}
+  .hero{width:100%;height:260px;border-radius:8px;background-size:cover;background-position:center;display:flex;align-items:flex-end;color:#fff;padding:12px}
+  .hero .title{font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,0.7)}
+  .content{padding-top:8px}
+  .meta{font-size:0.95rem;color:var(--muted);margin-bottom:8px}
+  .desc{font-size:0.95rem;line-height:1.35;margin-bottom:10px;color:#e6e6e6}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+  select,input[type=number]{padding:10px;border-radius:8px;border:none;background:#222;color:#fff;width:120px}
+  .btn{padding:12px 16px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+  .btn:disabled{background:#444;cursor:not-allowed;color:#999}
+  .pay-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .muted{color:var(--muted);font-size:0.95rem}
+  .small{font-size:0.88rem;color:#d0d0d0}
+  .copyBtn{padding:8px 10px;border-radius:8px;border:none;background:#333;color:#fff;cursor:pointer}
+  .whats{background:#0a9c3b}
+  .notice{background:#1f1f1f;padding:10px;border-radius:8px;color:#e6e6e6;font-size:0.95rem}
+  .bottomline{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px;flex-wrap:wrap}
+  .linkMore{font-size:0.9rem;color:#cfcfcf;text-decoration:underline;cursor:pointer;background:none;border:none}
+  .seats{font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <!-- Logo: substitua LOGO_URL pela url direta da imagem se quiser -->
+    <img class="logo" id="logoImg" src="" alt="logo" />
+    <div>
+      <h1>Trilheiros de Rondonópolis</h1>
+      <div class="small">Passeios, trilhas e aventuras</div>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- CARD: Rio Cristalino -->
+    <section class="card" id="card-rio">
+      <div class="hero" id="hero-rio" style="background:#123">
+        <div>
+          <div class="title">Rio Cristalino — Poxoréu/MT</div>
+          <div class="small">10 de dezembro — Aldeia Dom Bosco, TI Sangradouro</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="meta">Vagas totais: <span class="seats" id="cap-rio">25</span>, restantes: <span class="seats" id="rem-rio">25</span></div>
+        <p class="desc">
+          Um lugar com águas transparentes em tons azulados e uma energia única da natureza.
+          Incluso: transporte ida e volta, condutor local, seguro de vida e acesso ao local. Não incluso: alimentação.
+        </p>
+
+        <div class="row">
+          <label class="small">Quantidade:</label>
+          <select id="qty-rio">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+          </select>
+
+          <div class="small" id="price-label-rio">Valor por pessoa: R$ 385,00 (PIX)</div>
+        </div>
+
+        <div class="row">
+          <div class="muted">Total:</div>
+          <div style="font-weight:800;margin-left:6px" id="total-rio">R$ 385,00</div>
+        </div>
+
+        <div class="pay-row">
+          <button class="copyBtn" id="copyPix-rio">Copiar chave PIX</button>
+          <a class="btn" id="cardLink-rio" href="https://mpago.li/1DhBcxg" target="_blank">Pagar no Cartão</a>
+          <button class="btn whats" id="whats-rio">Enviar confirmação no WhatsApp</button>
+          <button class="linkMore" id="more-rio">Ver fotos</button>
+        </div>
+
+        <div class="bottomline">
+          <div class="notice">PIX: <strong id="pixKey">trilheiros.roomt@gmail.com</strong></div>
+          <div class="small">Cartão: Mercado Pago</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARD: Guiratinga -->
+    <section class="card" id="card-gui">
+      <div class="hero" id="hero-gui" style="background:#234">
+        <div>
+          <div class="title">Guiratinga — Cachoeira do Borá</div>
+          <div class="small">7 de dezembro — passeio com transporte e almoço</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="meta">Vagas totais: <span class="seats" id="cap-gui">28</span>, restantes: <span class="seats" id="rem-gui">28</span></div>
+        <p class="desc">
+          Vamos visitar a Cachoeira do Borá, a charmosa Vila Coreia e o Museu Histórico de Guiratinga.
+          Incluso: transporte, almoço, seguro de vida e acesso aos atrativos. Café da manhã compartilhado.
+        </p>
+
+        <div class="row">
+          <label class="small">Quantidade:</label>
+          <select id="qty-gui">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+          </select>
+
+          <div class="small" id="price-label-gui">Valor por pessoa: R$ 275,00 (PIX)</div>
+        </div>
+
+        <div class="row">
+          <div class="muted">Total:</div>
+          <div style="font-weight:800;margin-left:6px" id="total-gui">R$ 275,00</div>
+        </div>
+
+        <div class="pay-row">
+          <button class="copyBtn" id="copyPix-gui">Copiar chave PIX</button>
+          <a class="btn" id="cardLink-gui" href="https://mpago.li/1YawPEd" target="_blank">Pagar no Cartão</a>
+          <button class="btn whats" id="whats-gui">Enviar confirmação no WhatsApp</button>
+          <button class="linkMore" id="more-gui">Ver fotos</button>
+        </div>
+
+        <div class="bottomline">
+          <div class="notice">PIX: <strong id="pixKey2">trilheiros.roomt@gmail.com</strong></div>
+          <div class="small">Cartão: Mercado Pago</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <p style="text-align:center;margin-top:18px;color:#cfcfcf;font-size:0.95rem">
+    Após pagar, clique em "Enviar confirmação no WhatsApp" e anexe o comprovante na mensagem.
+  </p>
+</div>
+
+<script>
+/* =========================
+   CONFIGURAÇÃO RÁPIDA
+   - substitua as variáveis abaixo por links diretos de imagem se quiser
+   - se não tiver a URL direta ainda, os botões "Ver fotos" abrem os álbuns Imgur que você enviou
+   ========================= */
+const CONFIG = {
+  logoUrl: "", // se tiver logo direta coloque a url da imagem aqui, exemplo i.imgur.com/ABC.jpg
+  // imagens principais: se tiver link direto de imagem coloque aqui, caso contrário "more" abre o álbum
+  rioImage: "", // ex: "https://i.imgur.com/xxxxx.jpg"
+  rioAlbum: "https://imgur.com/a/1ir390s",
+  guiImage: "",
+  guiAlbum: "https://imgur.com/a/uS3olds",
+  // pagamentos e contato
+  pixKey: "trilheiros.roomt@gmail.com",
+  mpRio: "https://mpago.li/1DhBcxg",
+  mpGui: "https://mpago.li/1YawPEd",
+  whatsNumber: "5566996926174" // sem +, usado no wa.me
+};
+
+// inicializa imagens e logo
+document.getElementById('logoImg').src = CONFIG.logoUrl || "";
+if(!CONFIG.logoUrl) document.getElementById('logoImg').style.display = 'none';
+
+const heroRio = document.getElementById('hero-rio');
+const heroGui = document.getElementById('hero-gui');
+
+// se houver imagem direta usa ela, senao usa degrade e mostrar "Ver fotos"
+if(CONFIG.rioImage){
+  heroRio.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0.25)), url('${CONFIG.rioImage}')`;
+} else {
+  heroRio.style.background = 'linear-gradient(135deg,#164a3a,#0b2740)';
+}
+if(CONFIG.guiImage){
+  heroGui.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0.25)), url('${CONFIG.guiImage}')`;
+} else {
+  heroGui.style.background = 'linear-gradient(135deg,#2a3b17,#2a1050)';
+}
+
+/* ================
+   Vagas, preços e controle localStorage
+   ================ */
+const CAP = { rio:25, gui:28 };
+const PRICE = { rio:385.00, rioCard:399.00, rioOwn:160.00, gui:275.00, guiCard:289.00 };
+
+function getCounter(key){
+  const v = parseInt(localStorage.getItem(key));
+  return isNaN(v) ? 0 : v;
+}
+function setCounter(key,val){ localStorage.setItem(key,String(val)); }
+
+/* inicializa counters se não existirem */
+if(localStorage.getItem('reserved_rio') === null) setCounter('reserved_rio',0);
+if(localStorage.getItem('reserved_gui') === null) setCounter('reserved_gui',0);
+
+/* atualiza UI de vagas restantes */
+function updateSeatsUI(){
+  const reservedRio = getCounter('reserved_rio');
+  const reservedGui = getCounter('reserved_gui');
+  document.getElementById('rem-rio').textContent = Math.max(0, CAP.rio - reservedRio);
+  document.getElementById('rem-gui').textContent = Math.max(0, CAP.gui - reservedGui);
+}
+updateSeatsUI();
+
+/* cálculo de totais */
+const qtyRio = document.getElementById('qty-rio');
+const qtyGui = document.getElementById('qty-gui');
+const totalRio = document.getElementById('total-rio');
+const totalGui = document.getElementById('total-gui');
+
+function formatBR(val){ return 'R$ ' + val.toFixed(2).replace('.',','); }
+
+function calcRio(){
+  const q = parseInt(qtyRio.value);
+  totalRio.textContent = formatBR(q * PRICE.rio);
+}
+function calcGui(){
+  const q = parseInt(qtyGui.value);
+  totalGui.textContent = formatBR(q * PRICE.gui);
+}
+qtyRio.addEventListener('change', calcRio);
+qtyGui.addEventListener('change', calcGui);
+calcRio(); calcGui();
+
+/* copiar chave PIX */
+function copyToClipboard(text){
+  navigator.clipboard?.writeText(text).then(()=>{ alert('Chave PIX copiada: ' + text); })
+  .catch(()=>{ prompt('Copie a chave PIX abaixo:', text); });
+}
+document.getElementById('copyPix-rio').addEventListener('click', ()=> copyToClipboard(CONFIG.pixKey));
+document.getElementById('copyPix-gui').addEventListener('click', ()=> copyToClipboard(CONFIG.pixKey));
+
+/* abrir álbuns */
+document.getElementById('more-rio').addEventListener('click', ()=> window.open(CONFIG.rioAlbum,'_blank'));
+document.getElementById('more-gui').addEventListener('click', ()=> window.open(CONFIG.guiAlbum,'_blank'));
+
+/* abrir Mercado Pago links (já colocados no HTML), caso queira trocar dinamicamente
+document.getElementById('cardLink-rio').href = CONFIG.mpRio;
+document.getElementById('cardLink-gui').href = CONFIG.mpGui;
+*/
+
+/* função que tenta reservar e enviar WhatsApp */
+async function reserveAndSend(kind){
+  const name = kind === 'rio' ? document.getElementById('nome').value.trim() : document.getElementById('nome').value.trim();
+  if(!name){ alert('Digite seu nome completo no campo superior'); return; }
+
+  let qty = kind === 'rio' ? parseInt(qtyRio.value) : parseInt(qtyGui.value);
+  if(qty <= 0){ alert('Escolha a quantidade'); return; }
+
+  // check available
+  const key = kind === 'rio' ? 'reserved_rio' : 'reserved_gui';
+  const cap = kind === 'rio' ? CAP.rio : CAP.gui;
+  const reserved = getCounter(key);
+  if(reserved + qty > cap){
+    alert('Não há vagas suficientes disponíveis, escolha quantidade menor.');
+    updateSeatsUI();
+    return;
+  }
+
+  // increment local counter (localStorage)
+  setCounter(key, reserved + qty);
+  updateSeatsUI();
+
+  // calcula valor
+  const unit = kind === 'rio' ? PRICE.rio : PRICE.gui;
+  const total = unit * qty;
+
+  // copia pix automaticamente para facilitar quando for pago via pix
+  copyToClipboard(CONFIG.pixKey);
+
+  // montar mensagem WhatsApp
+  const passeioName = kind === 'rio' ? 'Passeio Rio Cristalino – Poxoréu/MT' : 'Passeio Guiratinga – Cachoeira do Borá';
+  const msg = `Olá, segue minha reserva para o ${passeioName}.\nNome: ${name}\nQuantidade de vagas: ${qty}\nValor total: ${formatBR(total)}\nForma de pagamento: (informe PIX ou Cartão)\nVou enviar o comprovante em seguida.`;
+
+  // abrir WhatsApp com mensagem no seu número
+  const wa = `https://wa.me/${CONFIG.whatsNumber}?text=${encodeURIComponent(msg)}`;
+  window.open(wa,'_blank');
+}
+
+/* eventos dos botões de WhatsApp */
+document.getElementById('whats-rio').addEventListener('click', ()=> reserveAndSend('rio'));
+document.getElementById('whats-gui').addEventListener('click', ()=> reserveAndSend('gui'));
+
+/* Atualiza botão estado se espaço esgotado */
+function disableIfFull(){
+  const reservedRio = getCounter('reserved_rio');
+  const reservedGui = getCounter('reserved_gui');
+  if(reservedRio >= CAP.rio){
+    document.getElementById('whats-rio').disabled = true;
+    document.getElementById('qty-rio').disabled = true;
+    document.getElementById('copyPix-rio').disabled = true;
+  }
+  if(reservedGui >= CAP.gui){
+    document.getElementById('whats-gui').disabled = true;
+    document.getElementById('qty-gui').disabled = true;
+    document.getElementById('copyPix-gui').disabled = true;
+  }
+}
+disableIfFull();
+
+/* opcional: atualizar UI periodicamente por causa de possíveis mudanças locais */
+setInterval(()=>{ updateSeatsUI(); disableIfFull(); },3000);
+
+/* inserir os pixKey exibidos */
+document.getElementById('pixKey').textContent = CONFIG.pixKey;
+document.getElementById('pixKey2').textContent = CONFIG.pixKey;
+</script>
+</body>
+</html>
