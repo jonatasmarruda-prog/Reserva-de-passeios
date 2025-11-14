@@ -1,276 +1,231 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reserva de Passeios</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reserva de Passeios - Trilheiros de Rondonópolis</title>
 <style>
-body {
-    font-family: Arial;
-    background: #000;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-}
-.container {
-    width: 100 percent;
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
-.logo {
-    width: 140px;
-    display: block;
-    margin: 0 auto 20px auto;
-}
-.title {
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-}
-.subtitle {
-    text-align: center;
-    font-size: 20px;
-    margin-bottom: 25px;
-}
-.passeio-card {
-    background: #111;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 35px;
-    border: 1px solid #333;
-}
-.passeio-img {
-    width: 100 percent;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-h2 {
-    font-size: 24px;
-}
-label {
-    font-size: 17px;
-}
-select, input {
-    width: 100 percent;
-    padding: 10px;
-    font-size: 17px;
-    border-radius: 6px;
-    border: none;
-    margin-bottom: 15px;
-}
-button {
-    width: 100 percent;
-    padding: 14px;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-.pix-button {
-    background: #00c853;
-    color: #fff;
-}
-.card-button {
-    background: #2962ff;
-    color: #fff;
-}
-.whatsapp-button {
-    background: #25d366;
-    color: #000;
-    font-weight: bold;
-}
-.valor-box {
-    background: #222;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-.hidden {
-    display: none;
-}
+  :root{
+    --bg:#0b0b0b;
+    --card:#121212;
+    --muted:#bdbdbd;
+    --accent:#25d366;
+    --pix:#00c853;
+    --cardbtn:#2979ff;
+    --white:#ffffff;
+  }
+  html,body{height:100%;margin:0;padding:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:18px}
+  header{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0}
+  header img{width:120px;height:auto;border-radius:8px}
+  h1{font-size:22px;margin:0;font-weight:700;text-align:center}
+  h2{font-size:14px;margin:0;color:var(--muted);text-align:center}
+  .cards{display:grid;grid-template-columns:1fr;gap:18px;margin-top:16px}
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,0.4)}
+  .card img{width:100%;height:auto;border-radius:8px;display:block;margin-bottom:12px}
+  .card h3{margin:0 0 8px 0;font-size:20px}
+  .card p{margin:0 0 10px 0;color:var(--muted);font-size:15px;line-height:1.35}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:15px;color:var(--muted)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  label{display:block;font-size:15px;margin-bottom:6px;color:var(--white)}
+  select,input[type="text"]{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);font-size:16px}
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .btn{display:inline-block;padding:12px 14px;border-radius:8px;text-align:center;font-weight:700;border:none;cursor:pointer;font-size:16px}
+  .btn-pix{background:linear-gradient(0deg,var(--pix),#00b74a);color:var(--white)}
+  .btn-card{background:linear-gradient(0deg,var(--cardbtn),#1c54d6);color:var(--white)}
+  .btn-whats{display:block;background:var(--accent);color:#000;padding:12px;border-radius:10px;text-align:center;font-weight:800;border:none;margin-top:12px;font-size:17px}
+  .totalBox{margin-top:12px;padding:12px;border-radius:8px;background:#0f0f0f;border:1px solid rgba(255,255,255,0.04);font-size:17px}
+  .payBox{margin-top:10px;padding:12px;border-radius:8px;background:#0f0f0f;border:1px solid rgba(255,255,255,0.03);font-size:16px}
+  .small-note{margin-top:10px;color:var(--muted);font-size:14px}
+  .copied{display:inline-block;margin-left:8px;padding:4px 8px;border-radius:6px;background:#222;color:#bdf7c7;font-weight:700;font-size:13px}
+  footer{margin-top:18px;color:var(--muted);font-size:15px;text-align:center}
+  @media(min-width:720px){
+    .cards{grid-template-columns:1fr 1fr}
+    header img{width:140px}
+    h1{font-size:26px}
+  }
 </style>
-
-<script>
-// Função calcula valores
-function atualizarValor(idPrefix) {
-    let vagas = document.getElementById(idPrefix + "-qtd").value;
-    let forma = document.getElementById(idPrefix + "-pag").value;
-
-    let pix = parseFloat(document.getElementById(idPrefix + "-pix").value);
-    let card = parseFloat(document.getElementById(idPrefix + "-card").value);
-
-    let total = 0;
-
-    if (forma === "pix") total = vagas * pix;
-    if (forma === "card") total = vagas * card;
-
-    document.getElementById(idPrefix + "-total").innerHTML = "Total: R$ " + total.toFixed(2);
-
-    document.getElementById(idPrefix + "-pixbox").classList.add("hidden");
-    document.getElementById(idPrefix + "-cardbox").classList.add("hidden");
-
-    if (forma === "pix") {
-        document.getElementById(idPrefix + "-pixbox").classList.remove("hidden");
-    }
-    if (forma === "card") {
-        document.getElementById(idPrefix + "-cardbox").classList.remove("hidden");
-    }
-}
-
-// Enviar WhatsApp
-function enviarWhatsApp(idPrefix, passeioNome) {
-    let nome = document.getElementById(idPrefix + "-nome").value;
-    let vagas = document.getElementById(idPrefix + "-qtd").value;
-    let forma = document.getElementById(idPrefix + "-pag").value;
-    let total = document.getElementById(idPrefix + "-total").innerText;
-
-    if (nome.trim() === "") {
-        alert("Digite seu nome.");
-        return;
-    }
-
-    let mensagem =
-        "Olá Jonatas, aqui é " + nome +
-        ". Confirmo minha reserva no passeio " + passeioNome +
-        ", quantidade " + vagas + " vagas, forma de pagamento " + forma +
-        ", " + total + ". Segue comprovante.";
-
-    let url = "https://wa.me/5566996926174?text=" + encodeURIComponent(mensagem);
-    window.open(url, "_blank");
-}
-</script>
-
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <img src="https://i.imgur.com/MwHr761.png" alt="Trilheiros de Rondonópolis logo" />
+    <h1>Reserva de Passeios</h1>
+    <h2>Trilheiros de Rondonópolis</h2>
+  </header>
 
-<div class="container">
+  <main class="cards">
 
-<img src="https://i.imgur.com/MwHr761.png" class="logo">
+    <!-- CARD GUIRATINGA -->
+    <article class="card" id="card-guiratinga">
+      <img src="https://i.imgur.com/HXbWpEc.png" alt="Guiratinga - Cachoeira do Borá" />
+      <h3>Guiratinga - Cachoeira do Borá</h3>
+      <p>Roteiro Cachoeira do Borá, Vila Coreia e Museu Histórico. Incluso café da manhã caseiro, almoço, transporte, condutor local e seguro de vida.</p>
 
-<div class="title">Reserva de Passeios</div>
-<div class="subtitle">Trilheiros de Rondonópolis</div>
+      <div class="meta">
+        <div><strong>Data:</strong> 7 de dezembro</div>
+        <div><strong>Vagas totais:</strong> 28</div>
+      </div>
 
-<!-- PASSEIO 1 RIO CRISTALINO -->
-<div class="passeio-card">
-    <img src="https://i.imgur.com/sgiYZYh.jpeg" class="passeio-img">
+      <label for="guira-nome">Nome completo</label>
+      <input id="guira-nome" type="text" placeholder="Digite seu nome" />
 
-    <h2>Rio Cristalino – Poxoréu MT</h2>
+      <div class="row" style="margin-top:10px">
+        <div style="flex:1">
+          <label for="guira-qtd">Quantidade de vagas</label>
+          <select id="guira-qtd" onchange="atualizar('guira')">
+            <!-- options 1..12 -->
+            ${[...Array(12)].map((_,i)=>`<option value="${i+1}">${i+1} vaga(s)</option>`).join('')}
+          </select>
+        </div>
+        <div style="width:140px">
+          <label for="guira-pag">Pagamento</label>
+          <select id="guira-pag" onchange="atualizar('guira')">
+            <option value="pix">PIX</option>
+            <option value="card">Cartão</option>
+          </select>
+        </div>
+      </div>
 
-    <p>Águas cristalinas, natureza pura e uma das experiências mais bonitas da região. Passeio dentro da Aldeia Dom Bosco.</p>
+      <div class="totalBox" id="guira-total">Total: R$ 275,00</div>
 
-    <p><b>Data</b>: 10 de dezembro</p>
+      <div class="payBox" id="guira-pixbox">
+        <div><strong>PIX por pessoa</strong> R$ 275,00</div>
+        <button class="btn btn-pix" onclick="copiarPix('trilheiros.roomt@gmail.com','guira')">Copiar chave PIX</button>
+        <span id="guira-copied" class="copied" style="display:none">Copiado</span>
+      </div>
 
-    <p><b>Incluso</b>: transporte ida e volta, condutor local, seguro de vida e acesso.</p>
-    <p><b>Pix</b>: R$ 385</p>
-    <p><b>Cartão</b>: R$ 399</p>
-    <p><b>Veículo próprio</b>: R$ 160</p>
+      <div class="payBox" id="guira-cardbox" style="display:none">
+        <div><strong>Cartão por pessoa</strong> R$ 289,00</div>
+        <a class="btn btn-card" id="guira-cardlink" href="https://mpago.li/1YawPEd" target="_blank">Pagar com cartão</a>
+      </div>
 
-    <input id="rcri-nome" placeholder="Seu nome completo">
+      <div class="small-note">Após o pagamento, por favor clique no link abaixo do WhatsApp para enviar o comprovante e confirmar sua reserva</div>
 
-    <label>Quantidade de vagas</label>
-    <select id="rcri-qtd" onchange="atualizarValor('rcri')">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-        <option>11</option>
-        <option>12</option>
-    </select>
-
-    <label>Forma de pagamento</label>
-    <select id="rcri-pag" onchange="atualizarValor('rcri')">
-        <option value="pix">Pix</option>
-        <option value="card">Cartão</option>
-    </select>
-
-    <input type="hidden" id="rcri-pix" value="385">
-    <input type="hidden" id="rcri-card" value="399">
-
-    <div id="rcri-total" class="valor-box">Total: R$ 385</div>
-
-    <div id="rcri-pixbox" class="valor-box">
-        Clique para copiar o Pix<br><b>trilheiros.roomt@gmail.com</b>
-    </div>
-
-    <div id="rcri-cardbox" class="valor-box hidden">
-        <a href="https://mpago.li/1DhBcxg" target="_blank">Pagar no cartão clique aqui</a>
-    </div>
-
-    <button class="whatsapp-button" onclick="enviarWhatsApp('rcri', 'Rio Cristalino')">
+      <button class="btn-whats" onclick="enviarWhats('guira','Guiratinga',275,289)">
         Enviar confirmação no WhatsApp
-    </button>
-</div>
+      </button>
+    </article>
 
+    <!-- CARD RIO CRISTALINO -->
+    <article class="card" id="card-rio">
+      <img src="https://i.imgur.com/sgiYZYh.jpeg" alt="Rio Cristalino - Poxoréu" />
+      <h3>Rio Cristalino - Poxoréu</h3>
+      <p>Águas cristalinas e experiência dentro da Aldeia Dom Bosco. Incluso café da manhã, almoço, transporte, condutor local e seguro de vida.</p>
 
-<!-- PASSEIO 2 GUIRATINGA -->
-<div class="passeio-card">
-    <img src="https://i.imgur.com/HXbWpEc.png" class="passeio-img">
+      <div class="meta">
+        <div><strong>Data:</strong> 10 de dezembro</div>
+        <div><strong>Vagas totais:</strong> 25</div>
+      </div>
 
-    <h2>Guiratinga – MT</h2>
+      <label for="rcri-nome">Nome completo</label>
+      <input id="rcri-nome" type="text" placeholder="Digite seu nome" />
 
-    <p>Visita a Cachoeira do Borá, Vila Coreia e Museu Histórico de Guiratinga.</p>
+      <div class="row" style="margin-top:10px">
+        <div style="flex:1">
+          <label for="rcri-qtd">Quantidade de vagas</label>
+          <select id="rcri-qtd" onchange="atualizar('rcri')">
+            ${[...Array(12)].map((_,i)=>`<option value="${i+1}">${i+1} vaga(s)</option>`).join('')}
+          </select>
+        </div>
+        <div style="width:140px">
+          <label for="rcri-pag">Pagamento</label>
+          <select id="rcri-pag" onchange="atualizar('rcri')">
+            <option value="pix">PIX</option>
+            <option value="card">Cartão</option>
+          </select>
+        </div>
+      </div>
 
-    <p><b>Data</b>: 7 de dezembro</p>
-    <p><b>Incluso</b>: transporte, almoço, seguro de vida e acesso aos atrativos.</p>
+      <div class="totalBox" id="rcri-total">Total: R$ 385,00</div>
 
-    <p><b>Pix</b>: R$ 275</p>
-    <p><b>Cartão</b>: R$ 289</p>
+      <div class="payBox" id="rcri-pixbox">
+        <div><strong>PIX por pessoa</strong> R$ 385,00</div>
+        <button class="btn btn-pix" onclick="copiarPix('trilheiros.roomt@gmail.com','rcri')">Copiar chave PIX</button>
+        <span id="rcri-copied" class="copied" style="display:none">Copiado</span>
+      </div>
 
-    <input id="guira-nome" placeholder="Seu nome completo">
+      <div class="payBox" id="rcri-cardbox" style="display:none">
+        <div><strong>Cartão por pessoa</strong> R$ 399,00</div>
+        <a class="btn btn-card" id="rcri-cardlink" href="https://mpago.li/1DhBcxg" target="_blank">Pagar com cartão</a>
+      </div>
 
-    <label>Quantidade de vagas</label>
-    <select id="guira-qtd" onchange="atualizarValor('guira')">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-        <option>11</option>
-        <option>12</option>
-    </select>
+      <div class="small-note">Após o pagamento, por favor clique no link abaixo do WhatsApp para enviar o comprovante e confirmar sua reserva</div>
 
-    <label>Forma de pagamento</label>
-    <select id="guira-pag" onchange="atualizarValor('guira')">
-        <option value="pix">Pix</option>
-        <option value="card">Cartão</option>
-    </select>
-
-    <input type="hidden" id="guira-pix" value="275">
-    <input type="hidden" id="guira-card" value="289">
-
-    <div id="guira-total" class="valor-box">Total: R$ 275</div>
-
-    <div id="guira-pixbox" class="valor-box">
-        Clique para copiar o Pix<br><b>trilheiros.roomt@gmail.com</b>
-    </div>
-
-    <div id="guira-cardbox" class="valor-box hidden">
-        <a href="https://mpago.li/SEU-LINK-AQUI" target="_blank">Pagar no cartão clique aqui</a>
-    </div>
-
-    <button class="whatsapp-button" onclick="enviarWhatsApp('guira', 'Guiratinga')">
+      <button class="btn-whats" onclick="enviarWhats('rcri','Rio Cristalino',385,399)">
         Enviar confirmação no WhatsApp
-    </button>
+      </button>
+    </article>
+
+  </main>
+
+  <footer style="margin-top:20px;color:var(--muted);font-size:14px;text-align:center">
+    Dúvidas? Clique em falar no WhatsApp.
+  </footer>
 </div>
 
-</div>
+<script>
+  // Inicializa visuais e cálculos
+  function formatReal(n){ return 'R$ ' + Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
+  function atualizar(prefix){
+    // prefix: 'guira' or 'rcri'
+    const qtd = Number(document.getElementById(prefix + '-qtd').value || 1);
+    const forma = document.getElementById(prefix + '-pag').value;
+    const pixPrice = prefix === 'guira' ? 275 : 385;
+    const cardPrice = prefix === 'guira' ? 289 : 399;
+    let total = forma === 'card' ? (cardPrice * qtd) : (pixPrice * qtd);
+    document.getElementById(prefix + '-total').innerText = 'Total: ' + formatReal(total);
+
+    // mostra/oculta boxes
+    if(forma === 'pix'){
+      document.getElementById(prefix + '-pixbox').style.display = 'block';
+      document.getElementById(prefix + '-cardbox').style.display = 'none';
+    } else {
+      document.getElementById(prefix + '-pixbox').style.display = 'none';
+      document.getElementById(prefix + '-cardbox').style.display = 'block';
+    }
+    // esconder label de copiado
+    document.getElementById(prefix + '-copied').style.display = 'none';
+  }
+
+  // copiar pix e mostrar confirmação
+  function copiarPix(chave, prefix){
+    if(!navigator.clipboard) {
+      alert('Seu navegador não permite copiar automaticamente. Copie manualmente: ' + chave);
+      return;
+    }
+    navigator.clipboard.writeText(chave).then(()=>{
+      const el = document.getElementById(prefix + '-copied');
+      if(el){ el.style.display = 'inline-block'; setTimeout(()=>el.style.display='none',2200); }
+    },()=>{
+      alert('Não foi possível copiar automaticamente. Copie manualmente: ' + chave);
+    });
+  }
+
+  // enviar para WhatsApp com mensagem automática
+  function enviarWhats(prefix, passeioNome, pixUnit, cardUnit){
+    const nomeEl = document.getElementById(prefix === 'guira' ? 'guira-nome' : 'rcri-nome');
+    const qtdEl = document.getElementById(prefix + '-qtd');
+    const pagEl = document.getElementById(prefix + '-pag');
+
+    const nome = nomeEl.value.trim();
+    if(!nome){ alert('Digite seu nome para continuar'); nomeEl.focus(); return; }
+    const qtd = Number(qtdEl.value || 1);
+    const forma = pagEl.value === 'card' ? 'Cartão' : 'PIX';
+    const total = (forma === 'Cartão' ? cardUnit * qtd : pixUnit * qtd);
+
+    const mensagem = `Olá Jonatas, meu nome é ${nome}. Reservei ${qtd} vaga(s) para o passeio ${passeioNome}. Forma de pagamento: ${forma}. Valor total: R$ ${total.toFixed(2)}. Vou enviar o comprovante agora.`;
+    const numero = '5566996926174';
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+    window.open(url,'_blank');
+  }
+
+  // inicializa defaults
+  document.addEventListener('DOMContentLoaded',function(){
+    // set initial totals
+    atualizar('guira'); atualizar('rcri');
+  });
+</script>
 </body>
 </html>
-
-        
