@@ -1,89 +1,190 @@
-<!DOCTYPE html><html lang="pt-BR">
+<<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reserva de Ônibus</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reserva de Passeio</title>
+<style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        text-align: center;
     }
     .container {
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        max-width: 460px;
+        width: 100%;
+        background: #fff;
+        padding: 20px;
+        margin: auto;
+        margin-top: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    }
+    img.logo {
+        width: 150px;
+        margin-bottom: 10px;
+    }
+    h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
     }
     h2 {
-      text-align: center;
+        margin-top: 5px;
+        font-size: 18px;
+        color: #555;
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
+    select, input, button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
     }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    .pixBox, .cartaoBox {
+        display: none;
+        background: #e8ffe8;
+        border: 1px solid #8bc34a;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 6px;
+        font-size: 16px;
     }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
+    .cartaoBox {
+        background: #e8f0ff;
+        border: 1px solid #4a74c3;
     }
-    button:hover {
-      background-color: #218838;
+    #btnWhats {
+        background: #25d366;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-top: 15px;
+        font-weight: bold;
     }
-  </style>
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Reserva de Ônibus</h2><label>Nome completo</label>
-<input type="text" id="nome" placeholder="Digite seu nome" />
 
-<label>Quantidade de pessoas</label>
-<select id="quantidade">
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-</select>
+<div class="container">
 
-<button onclick="enviarWhatsApp()">Enviar para WhatsApp</button>
+    <!-- LOGO -->
+    <img src="logo.png" class="logo" alt="logo">
 
-  </div>  <script>
-    function enviarWhatsApp() {
-      let nome = document.getElementById("nome").value.trim();
-      let qtd = document.getElementById("quantidade").value;
+    <!-- TITULO -->
+    <h1>Reserva de Passeio</h1>
+    <h2>Trilheiros de Rondonópolis</h2>
 
-      if (nome === "") {
-        alert("Preencha seu nome.");
-        return;
-      }
+    <!-- NOME -->
+    <input type="text" id="nome" placeholder="Seu nome completo">
 
-      let mensagem = `Olá Jonatas, gostaria de confirmar minha reserva. Nome: ${nome}, Pessoas: ${qtd}.`;
-      mensagem = encodeURIComponent(mensagem);
+    <!-- SELECIONAR PASSEIO -->
+    <select id="passeio">
+        <option value="">Selecione o passeio</option>
+        <option value="Rio Cristalino">Rio Cristalino</option>
+        <option value="Guiratinga">Guiratinga</option>
+    </select>
 
-      let whatsappNumber = "5566996926174";
-      let link = `https://wa.me/${whatsappNumber}?text=${mensagem}`;
+    <!-- QUANTIDADE -->
+    <select id="vagas">
+        <option value="">Quantidade de vagas</option>
+    </select>
 
-      window.open(link, "_blank");
+    <!-- FORMA DE PAGAMENTO -->
+    <select id="formaPag">
+        <option value="">Escolha a forma de pagamento</option>
+        <option value="pix">PIX</option>
+        <option value="cartao">Cartão de crédito</option>
+    </select>
+
+    <!-- VALOR PIX -->
+    <div class="pixBox" id="pixBox">
+        <b>Valor PIX:</b> <span id="valorPix"></span><br><br>
+        Clique para copiar a chave PIX:<br>
+        <b id="chavePix">trilheiros.roomt@gmail.com</b>
+    </div>
+
+    <!-- LINK CARTAO -->
+    <div class="cartaoBox" id="cartaoBox">
+        <b>Valor no cartão:</b> <span id="valorCartao"></span><br><br>
+        <a id="linkCartao" href="#" target="_blank">Clique aqui para pagar no cartão</a>
+    </div>
+
+    <!-- WHATSAPP -->
+    <button id="btnWhats">Enviar reserva pelo WhatsApp</button>
+
+</div>
+
+<script>
+    // Preencher vagas
+    const vagas = document.getElementById("vagas");
+    for (let i = 1; i <= 12; i++) {
+        let op = document.createElement("option");
+        op.value = i;
+        op.textContent = i + " vaga(s)";
+        vagas.appendChild(op);
     }
-  </script></body>
-</html>
+
+    // Valores por passeio
+    const valores = {
+        "Rio Cristalino": { pix: 275, cartao: 289, link: "https://mpago.li/1YawPEd" },
+        "Guiratinga": { pix: 275, cartao: 289, link: "https://mpago.li/1YawPEd" }
+    };
+
+    // Quando escolher forma de pagamento
+    document.getElementById("formaPag").addEventListener("change", function () {
+        let passeio = document.getElementById("passeio").value;
+        let metodo = this.value;
+
+        if (!passeio) {
+            alert("Selecione o passeio primeiro");
+            this.value = "";
+            return;
+        }
+
+        let dados = valores[passeio];
+
+        if (metodo === "pix") {
+            document.getElementById("pixBox").style.display = "block";
+            document.getElementById("cartaoBox").style.display = "none";
+            document.getElementById("valorPix").textContent = "R$ " + dados.pix;
+        }
+
+        if (metodo === "cartao") {
+            document.getElementById("pixBox").style.display = "none";
+            document.getElementById("cartaoBox").style.display = "block";
+            document.getElementById("valorCartao").textContent = "R$ " + dados.cartao;
+            document.getElementById("linkCartao").href = dados.link;
+        }
+    });
+
+    // WhatsApp
+    document.getElementById("btnWhats").addEventListener("click", function () {
+        let nome = document.getElementById("nome").value;
+        let passeio = document.getElementById("passeio").value;
+        let vagas = document.getElementById("vagas").value;
+        let forma = document.getElementById("formaPag").value;
+
+        if (!nome || !passeio || !vagas || !forma) {
+            alert("Preencha todos os campos");
+            return;
+        }
+
+        let telefone = "5566996926174";
+        let mensagem = 
+        "Olá Jonatas, acabei de fazer minha reserva.%0A" +
+        "Nome: " + nome + "%0A" +
+        "Passeio: " + passeio + "%0A" +
+        "Vagas: " + vagas + "%0A" +
+        "Forma de pagamento: " + forma + "%0A" +
+        "Já realizei o pagamento e estou enviando a confirmação.";
+
+        window.location.href = "https://wa.me/" + telefone + "?text=" + mensagem;
+    });
+</script>
+
 </body>
 </html>
