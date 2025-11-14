@@ -41,11 +41,26 @@ body {
 .descricao {
     font-size: 16px;
     color: #ccc;
+    margin-bottom: 8px;
+}
+.legenda {
+    font-size: 14px;
+    color: #aaa;
     margin-bottom: 12px;
 }
 h2 { margin-top: 0; font-size: 22px; }
 label { display: block; margin-top: 12px; font-size: 18px; }
-small { display: block; margin-top: 4px; font-size: 14px; color: #ccc; }
+input, select {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 5px;
+    background: #2a2a2a;
+    color: #fff;
+}
+input::placeholder { color: #ccc; }
 
 .contador {
     display: flex;
@@ -91,7 +106,7 @@ a.wabtn { background: #25d366; color: black; }
 </style>
 
 <script>
-let vagasDisponiveis = {1:28, 2:45};
+let vagasDisponiveis = {1:28, 2:28}; // total de vagas
 let precos = {1:{PIX:275, Credito:289}, 2:{PIX:385, Credito:399}};
 let links = {1:{PIX:'trilheiros.roomt@gmail.com', Credito:'https://mpago.li/1YawPEd'},
              2:{PIX:'trilheiros.roomt@gmail.com', Credito:'https://mpago.li/1YawPEd'}};
@@ -169,17 +184,19 @@ function enviarWhatsApp(id, nomePasseio){
 <div class="card">
 <img src="https://i.imgur.com/HXbWpEc.png">
 <div class="descricao">
-Em dezembro vamos explorar Guiratinga, no dia 7 de dezembro! 🌿✨<br>
-Nosso roteiro inclui a incrível Cachoeira do Borá, a charmosa Vila Coreia e o Museu Histórico de Guiratinga.<br>
-O que está incluso? 🚌 Transporte 🎟 Acesso aos atrativos 🍲 Almoço caseiro 🛡 Seguro de vida
+Em dezembro vamos explorar Guiratinga, no dia 7 de dezembro.<br>
+Nosso roteiro inclui a Cachoeira do Borá, a Vila Coreia e o Museu Histórico de Guiratinga.
+</div>
+<div class="legenda">
+Incluso: Transporte, acesso aos atrativos, almoço caseiro e seguro de vida.
 </div>
 
 <h2>Guiratinga Cachoeira do Borá</h2>
 <p>Data 7 de dezembro</p>
 
 <label>Nome completo</label>
-<input id="nome1" placeholder="Digite seu nome (ex: João Silva)">
-<small>Coloque seu nome completo para o registro da reserva</small>
+<input id="nome1" placeholder="Digite seu nome completo" style="height:48px;">
+<small>Por favor, preencha seu nome completo para o registro da reserva</small>
 
 <label>Quantidade de vagas</label>
 <div class="contador">
@@ -187,14 +204,14 @@ O que está incluso? 🚌 Transporte 🎟 Acesso aos atrativos 🍲 Almoço case
 <span id="qtd1">1</span>
 <button onclick="aumentar(1)">+</button>
 </div>
-<small>Escolha quantas vagas deseja reservar</small>
+<small>Selecione o número de vagas desejadas</small>
 
 <label>Pagamento</label>
 <select id="pag1" onchange="atualizar(1)">
 <option value="PIX">PIX</option>
 <option value="Credito">Cartão de crédito</option>
 </select>
-<small>Selecione o método de pagamento</small>
+<small>Escolha a forma de pagamento</small>
 
 <p id="total1" class="total">Total R$ 275</p>
 <p id="vagasRest1" class="vagas-restantes">Vagas restantes: 27</p>
@@ -208,16 +225,18 @@ O que está incluso? 🚌 Transporte 🎟 Acesso aos atrativos 🍲 Almoço case
 <div class="card">
 <img src="https://i.imgur.com/sgiYZYh.jpeg">
 <div class="descricao">
-Um lugar encantador dentro da TI Sangradouro, na Aldeia Dom Bosco, onde o Rio Cristalino faz jus ao nome. Suas águas transparentes, em tons azulados, refletem a beleza natural e a energia tranquila do ambiente indígena Xavante localizado em Poxoréu.<br>
-O que está incluso? 🚌 Transporte ida e volta 🛡 Seguro de vida 🎟 Condutor local 🎫 Acesso a Adelia
+Um lugar encantador dentro da TI Sangradouro, na Aldeia Dom Bosco, onde o Rio Cristalino faz jus ao nome. Suas águas transparentes refletem a beleza natural e a energia tranquila do ambiente indígena Xavante localizado em Poxoréu.
+</div>
+<div class="legenda">
+Incluso: Transporte ida e volta, seguro de vida e condutor local.
 </div>
 
 <h2>Rio Cristalino</h2>
 <p>Data 10 de dezembro</p>
 
 <label>Nome completo</label>
-<input id="nome2" placeholder="Digite seu nome (ex: Maria Souza)">
-<small>Coloque seu nome completo para o registro da reserva</small>
+<input id="nome2" placeholder="Digite seu nome completo" style="height:48px;">
+<small>Por favor, preencha seu nome completo para o registro da reserva</small>
 
 <label>Quantidade de vagas</label>
 <div class="contador">
@@ -225,17 +244,17 @@ O que está incluso? 🚌 Transporte ida e volta 🛡 Seguro de vida 🎟 Condut
 <span id="qtd2">1</span>
 <button onclick="aumentar(2)">+</button>
 </div>
-<small>Escolha quantas vagas deseja reservar</small>
+<small>Selecione o número de vagas desejadas</small>
 
 <label>Pagamento</label>
 <select id="pag2" onchange="atualizar(2)">
 <option value="PIX">PIX</option>
 <option value="Credito">Cartão de crédito</option>
 </select>
-<small>Selecione o método de pagamento</small>
+<small>Escolha a forma de pagamento</small>
 
 <p id="total2" class="total">Total R$ 385</p>
-<p id="vagasRest2" class="vagas-restantes">Vagas restantes: 44</p>
+<p id="vagasRest2" class="vagas-restantes">Vagas restantes: 27</p>
 <p id="mensagem2" class="mensagem"></p>
 
 <a id="pagamentoBtn2" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
