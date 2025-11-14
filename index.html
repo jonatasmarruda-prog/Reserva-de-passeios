@@ -14,174 +14,219 @@ body {
     margin: 0;
 }
 .container {
-    width: 100 percent;
+    width: 100%;
     max-width: 500px;
     margin: auto;
     padding: 15px;
 }
+.logo {
+    display: block;
+    width: 150px;
+    margin: 15px auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+}
 .card {
     background: #1c1c1c;
-    padding: 15px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: 15px;
     margin-bottom: 25px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
 }
 .card img {
-    width: 100 percent;
+    width: 100%;
     border-radius: 12px;
+    margin-bottom: 12px;
 }
-label {
-    display: block;
-    margin-top: 10px;
-    font-size: 18px;
+h2 { margin-top: 0; font-size: 22px; }
+label { display: block; margin-top: 12px; font-size: 18px; }
+small { display: block; margin-top: 4px; font-size: 14px; color: #ccc; }
+
+.contador {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
 }
-select, input {
-    width: 100 percent;
-    padding: 12px;
+.contador button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
     border-radius: 8px;
     border: none;
-    margin-top: 5px;
-    font-size: 18px;
+    cursor: pointer;
+    background: #2a2a2a;
+    color: #fff;
 }
-button {
-    width: 100 percent;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    margin-top: 15px;
+.contador span {
+    font-size: 20px;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+}
+
+a.btn {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 16px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
 }
-.pixbtn {
-    background: #00c853;
-    color: black;
-}
-.wabtn {
-    background: #25d366;
-    color: black;
-}
-.creditobtn {
-    background: #1976d2;
-    color: white;
-}
-.total {
-    font-size: 22px;
-    margin-top: 15px;
-    font-weight: bold;
-}
+a.pixbtn { background: #00c853; color: black; }
+a.creditobtn { background: #1976d2; color: white; }
+a.wabtn { background: #25d366; color: black; }
+
+.total, .vagas-restantes, .mensagem { font-size: 22px; margin-top: 10px; font-weight: bold; text-align: center; }
+.mensagem { font-size: 16px; color: #ff5252; margin-top: 8px; }
 </style>
 
 <script>
-function atualizarTotal(id, precoPix, precoCredito) {
-    const vagas = document.getElementById("vagas" + id).value;
-    const tipo = document.getElementById("pag" + id).value;
+let vagasDisponiveis = {1:28, 2:45};
+let precos = {1:{PIX:275, Credito:289}, 2:{PIX:385, Credito:399}};
+let links = {1:{PIX:'trilheiros.roomt@gmail.com', Credito:'https://mpago.li/1YawPEd'},
+             2:{PIX:'trilheiros.roomt@gmail.com', Credito:'https://mpago.li/1YawPEd'}};
 
-    let total = 0;
-    if (tipo === "PIX") total = vagas * precoPix;
-    else total = vagas * precoCredito;
+let quantidade = {1:1, 2:1};
 
-    document.getElementById("total" + id).innerHTML = "Total R$ " + total;
+function atualizar(id) {
+    const tipo = document.getElementById("pag"+id).value;
+    const disponivel = vagasDisponiveis[id];
+
+    if (quantidade[id] > disponivel) {
+        document.getElementById("mensagem"+id).innerText = "Vagas preenchidas, para mais informações falar com Jonatas";
+        document.getElementById("total"+id).innerText = "Total indisponível";
+        document.getElementById("pagamentoBtn"+id).style.display = "none";
+        return;
+    } else {
+        document.getElementById("mensagem"+id).innerText = "";
+    }
+
+    const total = precos[id][tipo]*quantidade[id];
+    document.getElementById("total"+id).innerText = "Total R$ "+total;
+    document.getElementById("vagasRest"+id).innerText = "Vagas restantes: "+(disponivel-quantidade[id]);
+    document.getElementById("qtd"+id).innerText = quantidade[id];
+
+    const btn = document.getElementById("pagamentoBtn"+id);
+    btn.style.display = "block";
+    if(tipo==="PIX"){
+        btn.innerText = "Copiar chave PIX";
+        btn.className = "btn pixbtn";
+        btn.href = "javascript:copiarPix('"+links[id][tipo]+"')";
+    } else {
+        btn.innerText = "Pagar no cartão";
+        btn.className = "btn creditobtn";
+        btn.href = links[id][tipo];
+        btn.target = "_blank";
+    }
 }
 
-function copiarPix(chave) {
+function aumentar(id){
+    quantidade[id]++;
+    atualizar(id);
+}
+function diminuir(id){
+    if(quantidade[id]>1){
+        quantidade[id]--;
+        atualizar(id);
+    }
+}
+
+function copiarPix(chave){
     navigator.clipboard.writeText(chave);
-    alert("Chave PIX copiada: " + chave);
+    alert("Chave PIX copiada: "+chave);
 }
 
-function enviarWhatsApp(id, nomePasseio) {
-    const nome = document.getElementById("nome" + id).value;
-    const vagas = document.getElementById("vagas" + id).value;
-
-    let mensagem = "Olá, meu nome é " + nome + ". Reservei " + vagas + " vaga(s) para o passeio " + nomePasseio + ". Segue o comprovante.";
-
-    let url = "https://wa.me/5566996926174?text=" + encodeURIComponent(mensagem);
-    window.open(url, "_blank");
+function enviarWhatsApp(id, nomePasseio){
+    const nome = document.getElementById("nome"+id).value;
+    if(!nome){
+        alert("Por favor, digite seu nome antes de enviar a confirmação.");
+        return;
+    }
+    if(quantidade[id]>vagasDisponiveis[id]){
+        alert("Vagas insuficientes. Para mais informações, fale com Jonatas.");
+        return;
+    }
+    let msg="Olá, meu nome é "+nome+". Reservei "+quantidade[id]+" vaga(s) para o passeio "+nomePasseio+". Segue o comprovante.";
+    window.open("https://wa.me/5566996926174?text="+encodeURIComponent(msg), "_blank");
 }
 </script>
 </head>
-
 <body>
 <div class="container">
+<img src="https://i.imgur.com/MwHr761.png" class="logo">
 
-<!-- PASSEIO GUIRATINGA -->
+<!-- Guiratinga -->
 <div class="card">
-    <img src="https://i.imgur.com/70FUkDi.jpeg" alt="Guiratinga">
+<img src="https://i.imgur.com/HXbWpEc.png">
+<h2>Guiratinga Cachoeira do Borá</h2>
+<p>Roteiro Cachoeira do Borá, Vila Coreia e Museu Histórico. Incluso almoço, transporte, condutor local e seguro de vida.</p>
+<p>Data 7 de dezembro</p>
 
-    <h2>Guiratinga Cachoeira do Borá</h2>
+<label>Nome completo</label>
+<input id="nome1" placeholder="Digite seu nome (ex: João Silva)">
+<small>Coloque seu nome completo para o registro da reserva</small>
 
-    <p>Roteiro Cachoeira do Borá, Vila Coreia e Museu Histórico. Incluso almoço caseiro, transporte, condutor local e seguro de vida.</p>
+<label>Quantidade de vagas</label>
+<div class="contador">
+<button onclick="diminuir(1)">-</button>
+<span id="qtd1">1</span>
+<button onclick="aumentar(1)">+</button>
+</div>
+<small>Escolha quantas vagas deseja reservar</small>
 
-    <p>Data sete de dezembro  Vagas totais: 28</p>
+<label>Pagamento</label>
+<select id="pag1" onchange="atualizar(1)">
+<option value="PIX">PIX</option>
+<option value="Credito">Cartão de crédito</option>
+</select>
+<small>Selecione o método de pagamento</small>
 
-    <label>Nome completo</label>
-    <input id="nome1" type="text" placeholder="Digite seu nome" />
+<p id="total1" class="total">Total R$ 275</p>
+<p id="vagasRest1" class="vagas-restantes">Vagas restantes: 27</p>
+<p id="mensagem1" class="mensagem"></p>
 
-    <label>Quantidade de vagas</label>
-    <select id="vagas1" onchange="atualizarTotal(1, 275, 289)">
-        <option value="1">1 vaga</option>
-        <option value="2">2 vagas</option>
-        <option value="3">3 vagas</option>
-        <option value="4">4 vagas</option>
-    </select>
-
-    <label>Pagamento</label>
-    <select id="pag1" onchange="atualizarTotal(1, 275, 289)">
-        <option value="PIX">PIX</option>
-        <option value="Credito">Cartão de crédito</option>
-    </select>
-
-    <p id="total1" class="total">Total R$ 275</p>
-
-    <button class="pixbtn" onclick="copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</button>
-
-    <button class="creditobtn" onclick="window.open('https://mpago.li/1YawPEd')">Pagar no cartão</button>
-
-    <p>Após o pagamento, por favor clique no link abaixo do WhatsApp para enviar o comprovante.</p>
-
-    <button class="wabtn" onclick="enviarWhatsApp(1, 'Guiratinga Cachoeira do Borá')">Enviar confirmação no WhatsApp</button>
+<a id="pagamentoBtn1" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
+<a class="btn wabtn" href="javascript:enviarWhatsApp(1,'Guiratinga Cachoeira do Borá')">Após pagamento, clique aqui e envie o comprovante</a>
 </div>
 
-
-
-<!-- PASSEIO RIO CRISTALINO -->
+<!-- Rio Cristalino -->
 <div class="card">
-    <img src="https://i.imgur.com/yvLmY2n.jpeg" alt="Rio Cristalino">
+<img src="https://i.imgur.com/sgiYZYh.jpeg">
+<h2>Rio Cristalino</h2>
+<p>Incluso café da manhã, almoço, transporte, seguro de vida e condutor local.</p>
+<p>Data 10 de dezembro</p>
 
-    <h2>Rio Cristalino</h2>
+<label>Nome completo</label>
+<input id="nome2" placeholder="Digite seu nome (ex: Maria Souza)">
+<small>Coloque seu nome completo para o registro da reserva</small>
 
-    <p>Incluso café da manhã, almoço, transporte, seguro de vida e condutor local.</p>
-
-    <p>Data a definir  Vagas totais: 45</p>
-
-    <label>Nome completo</label>
-    <input id="nome2" type="text" placeholder="Digite seu nome" />
-
-    <label>Quantidade de vagas</label>
-    <select id="vagas2" onchange="atualizarTotal(2, 385, 399)">
-        <option value="1">1 vaga</option>
-        <option value="2">2 vagas</option>
-        <option value="3">3 vagas</option>
-        <option value="4">4 vagas</option>
-    </select>
-
-    <label>Pagamento</label>
-    <select id="pag2" onchange="atualizarTotal(2, 385, 399)">
-        <option value="PIX">PIX</option>
-        <option value="Credito">Cartão de crédito</option>
-    </select>
-
-    <p id="total2" class="total">Total R$ 385</p>
-
-    <button class="pixbtn" onclick="copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</button>
-
-    <button class="creditobtn" onclick="window.open('https://mpago.li/1YawPEd')">Pagar no cartão</button>
-
-    <p>Após o pagamento, por favor clique no link abaixo do WhatsApp para enviar o comprovante.</p>
-
-    <button class="wabtn" onclick="enviarWhatsApp(2, 'Rio Cristalino')">Enviar confirmação no WhatsApp</button>
+<label>Quantidade de vagas</label>
+<div class="contador">
+<button onclick="diminuir(2)">-</button>
+<span id="qtd2">1</span>
+<button onclick="aumentar(2)">+</button>
 </div>
+<small>Escolha quantas vagas deseja reservar</small>
 
+<label>Pagamento</label>
+<select id="pag2" onchange="atualizar(2)">
+<option value="PIX">PIX</option>
+<option value="Credito">Cartão de crédito</option>
+</select>
+<small>Selecione o método de pagamento</small>
 
+<p id="total2" class="total">Total R$ 385</p>
+<p id="vagasRest2" class="vagas-restantes">Vagas restantes: 44</p>
+<p id="mensagem2" class="mensagem"></p>
+
+<a id="pagamentoBtn2" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
+<a class="btn wabtn" href="javascript:enviarWhatsApp(2,'Rio Cristalino')">Após pagamento, clique aqui e envie o comprovante</a>
+</div>
 
 </div>
 </body>
