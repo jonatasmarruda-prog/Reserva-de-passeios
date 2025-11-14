@@ -1,273 +1,89 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reserva de Passeios</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    text-align: center;
-    padding: 20px;
-}
-
-header img {
-    width: 180px;
-    margin-bottom: 10px;
-}
-
-.container {
-    background: #fff;
-    max-width: 750px;
-    margin: auto;
-    padding: 20px;
-    border-radius: 12px;
-}
-
-.passeio-box {
-    background: #fafafa;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 22px;
-    border: 1px solid #ddd;
-}
-
-.passeio-box img {
-    width: 100 percent;
-    border-radius: 12px;
-    margin-bottom: 12px;
-}
-
-select, input {
-    width: 100 percent;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.btn {
-    width: 100 percent;
-    background: #28a745;
-    color: #fff;
-    padding: 12px;
-    margin-top: 16px;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-.pagamento-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #eef6ff;
-    border-radius: 10px;
-    border: 1px solid #cfe2ff;
-    display: none;
-}
-
-.link-cartao {
-    display: block;
-    margin-top: 12px;
-    font-size: 17px;
-    color: #005eff;
-    text-decoration: none;
-}
-
-.pix-box {
-    background: #fff7d6;
-    padding: 12px;
-    margin-top: 12px;
-    border-radius: 8px;
-    border: 1px solid #ffe29a;
-    display: none;
-}
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reserva de Ônibus</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Reserva de Ônibus</h2><label>Nome completo</label>
+<input type="text" id="nome" placeholder="Digite seu nome" />
 
-<header>
-    <img src="https://i.imgur.com/MwHr761.png" alt="Logo Trilheiros">
-    <h2>Reserva de Passeios</h2>
-</header>
+<label>Quantidade de pessoas</label>
+<select id="quantidade">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+</select>
 
-<div class="container">
+<button onclick="enviarWhatsApp()">Enviar para WhatsApp</button>
 
-    <label><strong>Seu nome completo</strong></label>
-    <input type="text" id="nome" placeholder="Digite seu nome">
+  </div>  <script>
+    function enviarWhatsApp() {
+      let nome = document.getElementById("nome").value.trim();
+      let qtd = document.getElementById("quantidade").value;
 
-    <label><strong>Escolha o passeio</strong></label>
-    <select id="passeio">
-        <option value="">Selecione</option>
-
-        <option value="Rio Cristalino">Rio Cristalino, Poxoréu
-        Transporte, acesso aos atrativos, guia e seguro
-        </option>
-
-        <option value="Guiratinga">Guiratinga
-        Transporte, almoço, seguro de vida e acesso aos atrativos
-        </option>
-    </select>
-
-    <label><strong>Quantidade de vagas</strong></label>
-    <select id="vagas">
-        <option value="">Selecione</option>
-        <script>
-            for (let i = 1; i <= 12; i++) {
-                document.write(`<option value="${i}">${i}</option>`);
-            }
-        </script>
-    </select>
-
-    <div id="infoPasseios"></div>
-
-    <div class="pagamento-box" id="pagamentoBox">
-        <h3>Forma de Pagamento</h3>
-
-        <div id="valoresPix"></div>
-        <div id="valoresCartao"></div>
-
-        <div id="pixBox" class="pix-box"></div>
-
-        <a id="linkCartao" class="link-cartao" target="_blank"></a>
-
-        <p style="margin-top: 15px; font-size: 16px;">
-        Após o pagamento clique no botão abaixo para informar sua reserva e enviar o comprovante.
-        </p>
-    </div>
-
-    <button class="btn" id="sendWhatsApp">Enviar via WhatsApp</button>
-
-</div>
-
-<script>
-// Informações dos passeios
-const passeios = {
-    "Rio Cristalino": {
-        imagem: "https://i.imgur.com/sgiYZYh.jpeg",
-        pix: 275,
-        cartao: 289,
-        vagas: 25,
-        linkCartao: "https://mpago.li/1DhBcxg"
-    },
-
-    "Guiratinga": {
-        imagem: "https://i.imgur.com/HXbWpEc.png",
-        pix: 275,
-        cartao: 289,
-        vagas: 28,
-        linkCartao: "https://mpago.li/1YawPEd"
-    }
-};
-
-// Atualiza infos ao escolher passeio ou vagas
-document.getElementById("passeio").addEventListener("change", atualizarInfos);
-document.getElementById("vagas").addEventListener("change", atualizarInfos);
-
-function atualizarInfos() {
-    const passeio = document.getElementById("passeio").value;
-    const vagas = Number(document.getElementById("vagas").value);
-
-    if (!passeio || !vagas) {
-        document.getElementById("infoPasseios").innerHTML = "";
-        document.getElementById("pagamentoBox").style.display = "none";
+      if (nome === "") {
+        alert("Preencha seu nome.");
         return;
+      }
+
+      let mensagem = `Olá Jonatas, gostaria de confirmar minha reserva. Nome: ${nome}, Pessoas: ${qtd}.`;
+      mensagem = encodeURIComponent(mensagem);
+
+      let whatsappNumber = "5566996926174";
+      let link = `https://wa.me/${whatsappNumber}?text=${mensagem}`;
+
+      window.open(link, "_blank");
     }
-
-    const p = passeios[passeio];
-
-    const valorPix = p.pix * vagas;
-    const valorCartao = p.cartao * vagas;
-
-    document.getElementById("infoPasseios").innerHTML = `
-        <div class="passeio-box">
-            <img src="${p.imagem}">
-            <h3>${passeio}</h3>
-            <p><strong>Vagas disponíveis:</strong> ${p.vagas}</p>
-        </div>
-    `;
-
-    document.getElementById("valoresPix").innerHTML = `
-        <p><strong>Pix:</strong> R$ ${valorPix},00</p>
-        <button class="btn" style="background:#ffb300" onclick="selecionarPix('${valorPix}')">Pagar no Pix</button>
-    `;
-
-    document.getElementById("valoresCartao").innerHTML = `
-        <p><strong>Cartão de Crédito:</strong> R$ ${valorCartao},00</p>
-        <button class="btn" style="background:#005eff" onclick="selecionarCartao('${p.linkCartao}', '${valorCartao}')">Pagar no Cartão</button>
-    `;
-
-    document.getElementById("pagamentoBox").style.display = "block";
-}
-
-// PIX selecionado
-function selecionarPix(valor) {
-    document.getElementById("pixBox").style.display = "block";
-    document.getElementById("pixBox").innerHTML = `
-        <strong>Chave Pix:</strong><br>
-        trilheiros.roomt@gmail.com
-        <br><br>
-        <button class="btn" style="background:#ff9800" onclick="copiarPix()">Copiar Chave Pix</button>
-    `;
-
-    document.getElementById("linkCartao").style.display = "none";
-
-    window.pagamentoSelecionado = "Pix";
-}
-
-// Copiar chave PIX
-function copiarPix() {
-    navigator.clipboard.writeText("trilheiros.roomt@gmail.com");
-    alert("Chave Pix copiada");
-}
-
-// Cartão selecionado
-function selecionarCartao(link, valor) {
-    document.getElementById("linkCartao").style.display = "block";
-    document.getElementById("linkCartao").innerText = "Pagar no cartão";
-    document.getElementById("linkCartao").href = link;
-
-    document.getElementById("pixBox").style.display = "none";
-
-    window.pagamentoSelecionado = "Cartão";
-}
-
-// Envio para WhatsApp
-document.getElementById("sendWhatsApp").addEventListener("click", function () {
-    const nome = document.getElementById("nome").value;
-    const passeio = document.getElementById("passeio").value;
-    const vagas = document.getElementById("vagas").value;
-
-    if (!nome || !passeio || !vagas || !window.pagamentoSelecionado) {
-        alert("Preencha tudo antes de enviar");
-        return;
-    }
-
-    const mensagem =
-        "Reserva confirmada%0A" +
-        "Nome: " + nome + "%0A" +
-        "Passeio: " + passeio + "%0A" +
-        "Vagas: " + vagas + "%0A" +
-        "Forma de pagamento: " + window.pagamentoSelecionado + "%0A%0A" +
-        "Envie o comprovante aqui.";
-
-    const numero = "66996926174";
-    window.open("https://wa.me/" + numero + "?text=" + mensagem, "_blank");
-});
-</script>
-
+  </script></body>
+</html>
 </body>
 </html>
