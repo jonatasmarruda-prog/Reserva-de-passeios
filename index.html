@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reserva de Passeios Trilheiros de Rondonópolis</title>
+<title>Reserva - Lagoa Azul</title>
 
 <style>
 body {
@@ -38,16 +38,8 @@ body {
     border-radius: 12px;
     margin-bottom: 12px;
 }
-.descricao {
-    font-size: 16px;
-    color: #ccc;
-    margin-bottom: 8px;
-}
-.legenda {
-    font-size: 14px;
-    color: #aaa;
-    margin-bottom: 12px;
-}
+.descricao { font-size: 16px; color: #ccc; margin-bottom: 8px; }
+.legenda { font-size: 14px; color: #aaa; margin-bottom: 12px; }
 h2 { margin-top: 0; font-size: 22px; }
 label { display: block; margin-top: 12px; font-size: 18px; }
 input, select {
@@ -60,7 +52,6 @@ input, select {
     background: #2a2a2a;
     color: #fff;
 }
-input::placeholder { color: #ccc; }
 
 .contador {
     display: flex;
@@ -103,76 +94,80 @@ a.wabtn { background: #25d366; color: black; }
 
 .total, .vagas-restantes, .mensagem { font-size: 22px; margin-top: 10px; font-weight: bold; text-align: center; }
 .mensagem { font-size: 16px; color: #ff5252; margin-top: 8px; }
+@media(max-width:600px){
+  .container{padding:10px;}
+  .logo{width:120px;}
+  h2{font-size:20px;}
+  .card{padding:16px;}
+  input,select{font-size:16px;padding:12px;}
+  .contador button{width:44px;height:44px;font-size:22px;}
+  .contador span{font-size:20px;}
+  a.btn{font-size:16px;padding:14px;}
+  .total, .vagas-restantes{font-size:20px;}
+  .descricao{font-size:15px;}
+}
 </style>
 
 <script>
-let vagasDisponiveis = {1:28, 2:28}; // total de vagas
-let precos = {1:{PIX:275, Credito:289}, 2:{PIX:385, Credito:399}};
-let links = {1:{PIX:'trilheiros.roomt@gmail.com', Credito:'https://mpago.li/1YawPEd'},
-             2:{PIX:'trilheiros.roomt@gmail.com', Credito:'https://mpago.li/1YawPEd'}};
+let PRECOS = { adulto: 332, crianca: 282 };
+let vagasTotais = 28;
+let vagasReservadas = 0;
+let qtdAdulto = 1;
+let qtdCrianca = 0;
 
-let quantidade = {1:1, 2:1};
+function atualizar() {
+    let total = (qtdAdulto * PRECOS.adulto) + (qtdCrianca * PRECOS.crianca);
+    let totalVagas = qtdAdulto + qtdCrianca;
+    let restantes = vagasTotais - vagasReservadas - totalVagas;
 
-function atualizar(id) {
-    const tipo = document.getElementById("pag"+id).value;
-    const disponivel = vagasDisponiveis[id];
-
-    if (quantidade[id] > disponivel) {
-        document.getElementById("mensagem"+id).innerText = "Vagas preenchidas, para mais informações falar com Jonatas";
-        document.getElementById("total"+id).innerText = "Total indisponível";
-        document.getElementById("pagamentoBtn"+id).style.display = "none";
+    if (restantes < 0) {
+        document.getElementById("mensagem").innerText = "Vagas esgotadas para este número de reservas";
+        document.getElementById("total").innerText = "Total indisponível";
+        document.getElementById("pixbtn").style.display = "none";
+        document.getElementById("cardbtn").style.display = "none";
         return;
-    } else {
-        document.getElementById("mensagem"+id).innerText = "";
     }
 
-    const total = precos[id][tipo]*quantidade[id];
-    document.getElementById("total"+id).innerText = "Total R$ "+total;
-    document.getElementById("vagasRest"+id).innerText = "Vagas restantes: "+(disponivel-quantidade[id]);
-    document.getElementById("qtd"+id).innerText = quantidade[id];
+    document.getElementById("mensagem").innerText = "";
+    document.getElementById("total").innerText = "Total R$ " + total;
+    document.getElementById("vagasRest").innerText = "Vagas restantes: " + restantes;
 
-    const btn = document.getElementById("pagamentoBtn"+id);
-    btn.style.display = "block";
-    if(tipo==="PIX"){
-        btn.innerText = "Copiar chave PIX";
-        btn.className = "btn pixbtn";
-        btn.href = "javascript:copiarPix('"+links[id][tipo]+"')";
-    } else {
-        btn.innerText = "Pagar no cartão";
-        btn.className = "btn creditobtn";
-        btn.href = links[id][tipo];
-        btn.target = "_blank";
-    }
+    // PIX
+    document.getElementById("pixbtn").href = "javascript:copiarPix('trilheiros.roomt')";
+
+    // Cartão
+    document.getElementById("cardbtn").href = "https://link.mercadopago.com.br/trilheirosderoo";
 }
 
-function aumentar(id){
-    quantidade[id]++;
-    atualizar(id);
+function aumentar(tipo) {
+    if (tipo === 'adulto') qtdAdulto++;
+    else qtdCrianca++;
+    atualizar();
 }
-function diminuir(id){
-    if(quantidade[id]>1){
-        quantidade[id]--;
-        atualizar(id);
-    }
+function diminuir(tipo) {
+    if (tipo === 'adulto' && qtdAdulto > 1) qtdAdulto--;
+    if (tipo === 'crianca' && qtdCrianca > 0) qtdCrianca--;
+    atualizar();
 }
 
-function copiarPix(chave){
+function copiarPix(chave) {
     navigator.clipboard.writeText(chave);
-    alert("Chave PIX copiada: "+chave);
+    alert("Chave PIX copiada: " + chave);
 }
 
-function enviarWhatsApp(id, nomePasseio){
-    const nome = document.getElementById("nome"+id).value;
-    if(!nome){
-        alert("Por favor, digite seu nome antes de enviar a confirmação.");
+function enviarWhatsApp() {
+    let nome = document.getElementById("nome").value;
+    if (!nome) {
+        alert("Digite seu nome completo!");
         return;
     }
-    if(quantidade[id]>vagasDisponiveis[id]){
-        alert("Vagas insuficientes. Para mais informações, fale com Jonatas.");
-        return;
-    }
-    let msg="Olá, meu nome é "+nome+". Reservei "+quantidade[id]+" vaga(s) para o passeio "+nomePasseio+". Segue o comprovante.";
-    window.open("https://wa.me/5566996926174?text="+encodeURIComponent(msg), "_blank");
+
+    let total = (qtdAdulto * PRECOS.adulto) + (qtdCrianca * PRECOS.crianca);
+    let totalVagas = qtdAdulto + qtdCrianca;
+
+    let msg = `Olá, meu nome é ${nome}.\nReservei ${totalVagas} vaga(s) para a Lagoa Azul.\nValor total: R$ ${total}.\nSegue comprovante.`;
+
+    window.open("https://wa.me/5566996926174?text=" + encodeURIComponent(msg), "_blank");
 }
 </script>
 </head>
@@ -180,87 +175,44 @@ function enviarWhatsApp(id, nomePasseio){
 <div class="container">
 <img src="https://i.imgur.com/MwHr761.png" class="logo">
 
-<!-- Guiratinga -->
 <div class="card">
-<img src="https://i.imgur.com/HXbWpEc.png">
+<img src="https://i.imgur.com/aZCi6df.jpeg">
+
 <div class="descricao">
-Em dezembro vamos explorar Guiratinga, no dia 7 de dezembro.<br>
-Nosso roteiro inclui a Cachoeira do Borá, a Vila Coreia e o Museu Histórico de Guiratinga.
-</div>
-<div class="legenda">
-Incluso: Transporte, acesso aos atrativos, almoço caseiro e seguro de vida.
+A magia da Lagoa Azul te espera no dia 21 de dezembro! Um dos cenários mais lindos de Mato Grosso.
 </div>
 
-<h2>Guiratinga Cachoeira do Borá</h2>
-<p>Data 7 de dezembro</p>
+<h2>Lagoa Azul – Primavera do Leste</h2>
+<p>Data: 21 de dezembro</p>
 
 <label>Nome completo</label>
-<input id="nome1" placeholder="Digite seu nome completo" style="height:48px;">
-<small>Por favor, preencha seu nome completo para o registro da reserva</small>
+<input id="nome" placeholder="Digite seu nome completo" style="height:48px;">
 
-<label>Quantidade de vagas</label>
+<label>Adultos</label>
 <div class="contador">
-<button onclick="diminuir(1)">-</button>
-<span id="qtd1">1</span>
-<button onclick="aumentar(1)">+</button>
-</div>
-<small>Selecione o número de vagas desejadas</small>
-
-<label>Pagamento</label>
-<select id="pag1" onchange="atualizar(1)">
-<option value="PIX">PIX</option>
-<option value="Credito">Cartão de crédito</option>
-</select>
-<small>Escolha a forma de pagamento</small>
-
-<p id="total1" class="total">Total R$ 275</p>
-<p id="vagasRest1" class="vagas-restantes">Vagas restantes: 27</p>
-<p id="mensagem1" class="mensagem"></p>
-
-<a id="pagamentoBtn1" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
-<a class="btn wabtn" href="javascript:enviarWhatsApp(1,'Guiratinga Cachoeira do Borá')">Após pagamento, clique aqui e envie o comprovante</a>
+<button onclick="diminuir('adulto')">-</button>
+<span id="ad">1</span>
+<button onclick="aumentar('adulto')">+</button>
 </div>
 
-<!-- Rio Cristalino -->
-<div class="card">
-<img src="https://i.imgur.com/sgiYZYh.jpeg">
-<div class="descricao">
-Um lugar encantador dentro da TI Sangradouro, na Aldeia Dom Bosco, onde o Rio Cristalino faz jus ao nome. Suas águas transparentes refletem a beleza natural e a energia tranquila do ambiente indígena Xavante localizado em Poxoréu.
-</div>
-<div class="legenda">
-Incluso: Transporte ida e volta, seguro de vida e condutor local.
-</div>
-
-<h2>Rio Cristalino</h2>
-<p>Data 10 de dezembro</p>
-
-<label>Nome completo</label>
-<input id="nome2" placeholder="Digite seu nome completo" style="height:48px;">
-<small>Por favor, preencha seu nome completo para o registro da reserva</small>
-
-<label>Quantidade de vagas</label>
+<label>Crianças até 10 anos</label>
 <div class="contador">
-<button onclick="diminuir(2)">-</button>
-<span id="qtd2">1</span>
-<button onclick="aumentar(2)">+</button>
+<button onclick="diminuir('crianca')">-</button>
+<span id="cr">0</span>
+<button onclick="aumentar('crianca')">+</button>
 </div>
-<small>Selecione o número de vagas desejadas</small>
 
-<label>Pagamento</label>
-<select id="pag2" onchange="atualizar(2)">
-<option value="PIX">PIX</option>
-<option value="Credito">Cartão de crédito</option>
-</select>
-<small>Escolha a forma de pagamento</small>
+<p id="total" class="total">Total R$ 332</p>
+<p id="vagasRest" class="vagas-restantes">Vagas restantes: 28</p>
+<p id="mensagem" class="mensagem"></p>
 
-<p id="total2" class="total">Total R$ 385</p>
-<p id="vagasRest2" class="vagas-restantes">Vagas restantes: 27</p>
-<p id="mensagem2" class="mensagem"></p>
-
-<a id="pagamentoBtn2" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
-<a class="btn wabtn" href="javascript:enviarWhatsApp(2,'Rio Cristalino')">Após pagamento, clique aqui e envie o comprovante</a>
+<a id="pixbtn" class="btn pixbtn">Pagar no PIX</a>
+<a id="cardbtn" class="btn creditobtn" target="_blank">Pagar no cartão</a>
+<a class="btn wabtn" href="javascript:enviarWhatsApp()">Após pagamento, enviar comprovante</a>
 </div>
 
 </div>
+
+<script>atualizar();</script>
 </body>
 </html>
