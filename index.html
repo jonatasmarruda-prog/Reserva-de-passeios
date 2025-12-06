@@ -1,3 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reserva de Passeios Trilheiros de Rondonópolis</title>
+
+<style>
+body {
+    background: #111;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 15px;
+}
+.logo {
+    display: block;
+    width: 150px;
+    margin: 15px auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+}
+.card {
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+.card img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+.descricao {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+.legenda {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 12px;
+}
+h2 {
+    margin-top: 0;
+    font-size: 22px;
+}
+label {
+    display: block;
+    margin-top: 12px;
+    font-size: 18px;
+}
+input, select {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 5px;
+    background: #2a2a2a;
+    color: #fff;
+}
+input::placeholder {
+    color: #ccc;
+}
+.contador {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+.contador button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #2a2a2a;
+    color: #fff;
+}
+.contador span {
+    font-size: 20px;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+}
+a.btn {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+a.pixbtn { background: #00c853; color: black; }
+a.creditobtn { background: #1976d2; color: white; }
+a.wabtn { background: #25d366; color: black; }
+.total, .mensagem {
+    font-size: 22px;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+.mensagem {
+    font-size: 16px;
+    color: #ff5252;
+    margin-top: 8px;
+}
+</style>
+
 <script>
 // CONFIGURAÇÃO DE PASSEIOS
 let vagasDisponiveis = {
@@ -90,5 +212,99 @@ function enviarWhatsApp(id, nomePasseio){
     window.open("https://wa.me/5566996926174?text="+encodeURIComponent(msg), "_blank");
 }
 </script>
+</head>
+
+<body>
+<div class="container">
+
+    <img src="https://i.imgur.com/MwHr761.png" class="logo">
+
+    <!-- ======================= CÂNION DAS ÍNDIAS ======================= -->
+    <div class="card">
+        <img src="https://i.imgur.com/Njpv0ts.jpeg">
+
+        <div class="descricao">
+            ✨ Comece 2026 com energia positiva! No dia 11 de janeiro, vamos explorar o incrível Cânion das Índias, em Jaciara — um dos cenários mais fascinantes da região!
+        </div>
+
+        <div class="legenda">
+            Incluso: Transporte ida e volta, almoço (galinhada 😋), perneiras, seguro de vida e acesso às cachoeiras Mistério e Maravilha.
+        </div>
+
+        <h2>Cânion das Índias</h2>
+        <p>Data: 11 de janeiro</p>
+
+        <label>Nome completo</label>
+        <input id="nome1" placeholder="Digite seu nome completo">
+
+        <label>Quantidade de vagas</label>
+        <div class="contador">
+            <button onclick="diminuir(1)">-</button>
+            <span id="qtd1">1</span>
+            <button onclick="aumentar(1)">+</button>
+        </div>
+
+        <label>Pagamento</label>
+        <select id="pag1" onchange="atualizar(1)">
+            <option value="PIX">PIX</option>
+            <option value="Credito">Cartão de crédito</option>
+        </select>
+
+        <p id="total1" class="total">Total R$ 315</p>
+        <p id="mensagem1" class="mensagem"></p>
+
+        <a id="pagamentoBtn1" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
+
+        <a class="btn wabtn" href="javascript:enviarWhatsApp(1,'Cânion das Índias')">
+            Após pagamento, clique aqui e envie o comprovante
+        </a>
+    </div>
+
+
+    <!-- ======================= BOIA CROSS ======================= -->
+    <div class="card">
+        <img src="https://i.imgur.com/Auc7O8t.png">
+
+        <div class="descricao">
+            🌊 No dia 25 de janeiro, venha viver a aventura do Boia Cross no Rio Claro — Chapada dos Guimarães! Uma descida divertida pelas corredeiras, com muita adrenalina e natureza.
+        </div>
+
+        <div class="legenda">
+            Incluso: Equipamentos, fotos digitais, instrutor, transporte e seguro de vida.  
+            *Almoço não incluso.
+        </div>
+
+        <h2>Boia Cross</h2>
+        <p>Data: 25 de janeiro</p>
+
+        <label>Nome completo</label>
+        <input id="nome2" placeholder="Digite seu nome completo">
+
+        <label>Quantidade de vagas</label>
+        <div class="contador">
+            <button onclick="diminuir(2)">-</button>
+            <span id="qtd2">1</span>
+            <button onclick="aumentar(2)">+</button>
+        </div>
+
+        <label>Pagamento</label>
+        <select id="pag2" onchange="atualizar(2)">
+            <option value="PIX">PIX</option>
+            <option value="Credito">Cartão de crédito</option>
+        </select>
+
+        <p id="total2" class="total">Total R$ 425</p>
+        <p id="mensagem2" class="mensagem"></p>
+
+        <a id="pagamentoBtn2" class="btn pixbtn" href="javascript:copiarPix('trilheiros.roomt@gmail.com')">Copiar chave PIX</a>
+
+        <a class="btn wabtn" href="javascript:enviarWhatsApp(2,'Boia Cross')">
+            Após pagamento, clique aqui e envie o comprovante
+        </a>
+    </div>
+
+</div>
+</body>
+</html>
 
 
