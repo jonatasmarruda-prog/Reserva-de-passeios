@@ -1,303 +1,849 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expedição Barra do Garças | Trilheiros de Rondonópolis</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07110b">
+<meta name="description" content="Barra do Garças com os Trilheiros de Rondonópolis — 5 e 6 de setembro. Santuário das Araras, Cachoeira da Samambaia, Cânion do Cipó, Cachoeira dos Amigos e Cachoeira do Sossego.">
+<title>Barra do Garças | Trilheiros de Rondonópolis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040a06;--bg2:#0a1710;--card:rgba(12,24,16,.82);
+  --green:#39df78;--green2:#18ad59;--mint:#baffd1;
+  --white:#f7fbf8;--muted:#94a89a;--line:rgba(255,255,255,.08);
+  --gold:#e6c77a;--shadow:0 25px 80px rgba(0,0,0,.45);
+  --radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--white);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+button{font:inherit;border:none}
+.wrap{width:min(1200px,90%);margin:auto}
+
+/* ── AMBIENT GLOWS ── */
+.glow{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:-1;opacity:.6}
+.g1{width:500px;height:500px;top:-100px;left:-220px;background:rgba(57,223,120,.07)}
+.g2{width:400px;height:400px;top:40%;right:-200px;background:rgba(57,223,120,.05)}
+.g3{width:350px;height:350px;bottom:10%;left:10%;background:rgba(57,223,120,.04)}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before{
+  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:128px 128px;
+}
+
+/* ── CUSTOM SCROLLBAR ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--green2);border-radius:99px}
+
+/* ── ANIMATED REVEAL ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:all .4s}
+.topbar.scrolled{background:rgba(4,10,6,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);padding:12px 0}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{height:58px;width:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));transition:height .3s}
+.scrolled .logo{height:46px}
+.top-links{display:flex;align-items:center;gap:8px}
+.top-link{padding:9px 16px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04);backdrop-filter:blur(10px);font-size:12px;font-weight:700;letter-spacing:.02em;transition:all .3s}
+.top-link:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.top-link-primary{background:rgba(57,223,120,.12);border-color:rgba(57,223,120,.3);color:var(--mint)}
+.top-link-primary:hover{background:rgba(57,223,120,.2)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;position:relative;display:flex;align-items:flex-end;
+  isolation:isolate;overflow:hidden;background:#07110b;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-3;
+  background-image:url("https://i.postimg.cc/wvvX62Bq/sovai360-648839155.jpg");
+  background-size:cover;background-position:center 40%;
+  transform:scale(1.05);
+  animation:heroZoom 25s ease-in-out infinite alternate;
+}
+@keyframes heroZoom{0%{transform:scale(1.05)}100%{transform:scale(1.12)}}
+.hero-overlay{position:absolute;inset:0;z-index:-2;background:
+  linear-gradient(180deg,rgba(4,10,6,.3) 0%,rgba(4,10,6,.15) 30%,rgba(4,10,6,.7) 70%,rgba(4,10,6,.98) 100%)}
+.hero-vignette{position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 40%,transparent 20%,rgba(0,0,0,.5) 100%)}
+.hero-content{width:100%;padding:0 0 80px;text-align:center;position:relative}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid rgba(57,223,120,.2);border-radius:999px;background:rgba(5,18,10,.6);backdrop-filter:blur(12px);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#d9ffe6;margin-bottom:24px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 12px var(--green)}50%{opacity:.5;box-shadow:0 0 4px var(--green)}}
+.hero-title{
+  margin:0 auto 20px;max-width:1050px;
+  font-size:clamp(58px,11vw,140px);
+  line-height:.82;letter-spacing:-.07em;font-weight:900;
+  text-transform:uppercase;color:#fff;
+}
+.hero-title span{
+  background:linear-gradient(135deg,var(--mint),var(--green),#a3f5c5);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 4px 20px rgba(57,223,120,.3));
+}
+.hero-divider{
+  width:min(300px,50vw);height:1px;margin:0 auto 24px;position:relative;
+  background:linear-gradient(90deg,transparent,rgba(57,223,120,.5),rgba(255,255,255,.8),rgba(57,223,120,.5),transparent);
+}
+.hero-divider::after{
+  content:"";position:absolute;inset:-2px 0;
+  background:linear-gradient(90deg,transparent,rgba(57,223,120,.15),transparent);
+  filter:blur(6px);
+}
+.hero-sub{max-width:640px;margin:0 auto 32px;color:rgba(228,236,231,.85);font-size:17px;font-weight:400;line-height:1.7}
+.hero-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:16px 26px;border-radius:14px;font-weight:800;font-size:13px;
+  letter-spacing:.03em;border:none;cursor:pointer;
+  transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;
+}
+.btn::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:inherit}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--green),#1ec966);color:#041008;
+  box-shadow:0 8px 30px rgba(30,206,102,.2),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-primary:hover{box-shadow:0 12px 40px rgba(30,206,102,.35),inset 0 1px 0 rgba(255,255,255,.2)}
+.btn-primary::before{background:linear-gradient(135deg,#4dff8e,#1ec966)}
+.btn-ghost{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:.4;animation:scrollBounce 2.5s ease-in-out infinite;
+}
+.scroll-hint span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+.scroll-hint-line{width:1px;height:28px;background:linear-gradient(180deg,rgba(255,255,255,.5),transparent)}
+@keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ── SECTIONS ── */
+section{padding:110px 0;position:relative}
+.section-head{text-align:center;max-width:720px;margin:0 auto 52px}
+.section-kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);font-weight:800;margin-bottom:12px}
+.section-title{font-family:"Playfair Display",serif;font-size:clamp(36px,5vw,58px);line-height:1.05;margin-bottom:16px;letter-spacing:-.02em}
+.section-head p{color:var(--muted);font-size:15px;line-height:1.7}
+
+/* ── STATS BAR ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:60px;border-radius:20px;overflow:hidden}
+.stat{padding:28px 20px;background:rgba(255,255,255,.03);text-align:center;position:relative}
+.stat::after{content:"";position:absolute;right:0;top:20%;height:60%;width:1px;background:var(--line)}
+.stat:last-child::after{display:none}
+.stat-num{font-size:32px;font-weight:900;letter-spacing:-.04em;color:var(--mint)}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-top:4px}
+
+/* ── INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+.panel{
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);backdrop-filter:blur(14px);
+  position:relative;overflow:hidden;
+}
+.panel::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+}
+.story{padding:38px}
+.story h3{font-family:"Playfair Display",serif;font-size:30px;margin-bottom:14px;line-height:1.15}
+.story p{color:#b8c6bc;margin-bottom:22px;font-size:15px;line-height:1.7}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{
+  padding:14px 16px;border-radius:12px;
+  background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05);
+  font-size:13px;font-weight:600;
+  display:flex;align-items:center;gap:10px;
+  transition:all .3s;
+}
+.check:hover{background:rgba(57,223,120,.06);border-color:rgba(57,223,120,.15)}
+.check-icon{width:28px;height:28px;border-radius:8px;background:rgba(57,223,120,.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.check b{color:var(--mint)}
+.highlight{padding:34px;background:linear-gradient(155deg,rgba(28,100,54,.3),rgba(8,22,13,.95));display:flex;flex-direction:column;justify-content:space-between}
+.highlight::after{content:"";position:absolute;width:200px;height:200px;border-radius:50%;right:-70px;top:-70px;background:rgba(57,223,120,.1);filter:blur(40px)}
+.date-big{font-size:64px;line-height:.88;font-weight:900;letter-spacing:-.06em}
+.date-month{font-size:14px;display:block;letter-spacing:.12em;text-transform:uppercase;margin-top:14px;color:#b5ccbe;font-weight:700}
+.place{margin-top:28px;font-size:20px;font-weight:800}
+.place small{display:block;color:var(--muted);font-size:13px;font-weight:500;margin-top:4px}
+.difficulty-badge{
+  margin-top:28px;display:inline-flex;align-items:center;gap:10px;
+  padding:12px 18px;border-radius:12px;
+  background:rgba(230,199,122,.08);border:1px solid rgba(230,199,122,.15);
+  font-size:13px;font-weight:700;color:var(--gold);
+}
+.difficulty-dots{display:flex;gap:3px}
+.difficulty-dots span{width:8px;height:8px;border-radius:50%;background:rgba(230,199,122,.25)}
+.difficulty-dots span.active{background:var(--gold)}
+
+/* ── PRICE SECTION ── */
+.price-section{background:linear-gradient(180deg,transparent,rgba(20,72,39,.1),transparent)}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.price-card{
+  padding:32px 28px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);box-shadow:var(--shadow);position:relative;overflow:hidden;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+}
+.price-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+}
+.price-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.15)}
+.price-card.featured{border-color:rgba(57,223,120,.35);background:linear-gradient(155deg,rgba(20,60,35,.5),var(--card))}
+.price-card.featured:hover{border-color:rgba(57,223,120,.5);box-shadow:0 25px 80px rgba(21,170,83,.15)}
+.price-card.featured::before{background:linear-gradient(90deg,transparent,rgba(57,223,120,.3),transparent)}
+.featured-tag{
+  position:absolute;top:18px;right:18px;
+  padding:5px 12px;border-radius:999px;
+  background:rgba(57,223,120,.12);border:1px solid rgba(57,223,120,.25);
+  font-size:9px;font-weight:900;letter-spacing:.1em;color:var(--green);text-transform:uppercase;
+}
+.price-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:800}
+.price{font-size:46px;font-weight:900;letter-spacing:-.05em;margin:10px 0 4px}
+.price small{font-size:14px;color:var(--muted);letter-spacing:0;font-weight:500}
+.price-note{font-size:13px;color:#98a89e}
+.price-divider{height:1px;background:var(--line);margin:22px 0}
+.price-list{display:grid;gap:10px;font-size:13px;color:#b8c6bc}
+.price-list div{display:flex;align-items:center;gap:10px}
+.price-list .check-mark{width:18px;height:18px;border-radius:6px;background:rgba(57,223,120,.1);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--green);flex-shrink:0}
+
+/* ── ITINERARY ── */
+.itinerary{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.day{
+  padding:34px;border-radius:var(--radius);
+  background:linear-gradient(155deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border:1px solid var(--line);position:relative;overflow:hidden;
+  transition:all .4s;
+}
+.day::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+}
+.day:hover{border-color:rgba(255,255,255,.15)}
+.day-tag{color:var(--green);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.day h3{font-family:"Playfair Display",serif;font-size:28px;margin:10px 0 10px;line-height:1.15}
+.day>p{color:var(--muted);font-size:14px;line-height:1.6}
+.timeline{margin-top:24px;display:grid;gap:8px}
+.time{
+  display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:center;
+  padding:14px 16px;border-radius:12px;background:rgba(0,0,0,.2);
+  border:1px solid rgba(255,255,255,.03);transition:all .3s;
+}
+.time:hover{background:rgba(57,223,120,.04);border-color:rgba(57,223,120,.1)}
+.time strong{color:var(--green);font-size:11px;letter-spacing:.08em;font-weight:800}
+.time span{font-size:13px;color:#c8d6cc}
+
+/* ── GALLERY ── */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:220px;gap:12px}
+.gallery-card{
+  position:relative;overflow:hidden;border-radius:20px;
+  border:1px solid var(--line);cursor:pointer;background:#030804;
+  box-shadow:var(--shadow);transition:all .45s cubic-bezier(.16,1,.3,1);
+}
+.gallery-card:nth-child(1){grid-column:span 7;grid-row:span 2}
+.gallery-card:nth-child(2){grid-column:span 5}
+.gallery-card:nth-child(3){grid-column:span 5}
+.gallery-card:nth-child(4){grid-column:span 4}
+.gallery-card:nth-child(5){grid-column:span 4}
+.gallery-card:nth-child(6){grid-column:span 4}
+.gallery-card:nth-child(7){grid-column:span 12;grid-auto-rows:260px}
+.gallery-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.gallery-card.sossego img{object-fit:contain;background:#020603}
+.gallery-card::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85));
+  transition:opacity .3s;
+}
+.gallery-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-3px)}
+.gallery-card:hover img{transform:scale(1.06)}
+.gallery-info{position:absolute;z-index:2;left:22px;right:22px;bottom:20px;transition:transform .3s}
+.gallery-card:hover .gallery-info{transform:translateY(-4px)}
+.gallery-info strong{display:block;font-size:17px;font-weight:800}
+.gallery-info span{font-size:12px;color:#a8b5ac}
+
+/* ── INCLUDES ── */
+.includes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.include{
+  padding:28px 24px;border:1px solid var(--line);border-radius:18px;
+  background:rgba(255,255,255,.03);position:relative;overflow:hidden;
+  transition:all .35s;
+}
+.include::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+}
+.include:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12);transform:translateY(-2px)}
+.include-icon{
+  width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(57,223,120,.1),rgba(57,223,120,.03));
+  border:1px solid rgba(57,223,120,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:16px;
+}
+.include strong{display:block;font-size:15px;font-weight:800;margin-bottom:4px}
+.include span{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* ── FAQ ── */
+.faq{max-width:780px;margin:auto;display:grid;gap:8px}
+details{
+  border:1px solid var(--line);border-radius:16px;
+  background:rgba(255,255,255,.025);
+  overflow:hidden;transition:all .3s;
+}
+details[open]{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12)}
+summary{
+  cursor:pointer;font-weight:700;padding:20px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  list-style:none;font-size:15px;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"+";font-size:20px;font-weight:300;color:var(--green);
+  transition:transform .3s;width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;background:rgba(57,223,120,.06);flex-shrink:0;
+}
+details[open] summary::after{content:"−"}
+details .faq-body{padding:0 22px 20px;color:var(--muted);font-size:14px;line-height:1.7}
+
+/* ── CTA ── */
+.cta{padding:100px 0}
+.cta-box{
+  position:relative;overflow:hidden;text-align:center;padding:75px 36px;
+  border-radius:32px;
+  background:linear-gradient(145deg,rgba(18,61,35,.4),rgba(7,21,12,.95));
+  border:1px solid rgba(57,223,120,.18);box-shadow:var(--shadow);
+}
+.cta-box::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(57,223,120,.3),transparent);
+}
+.cta-box::after{
+  content:"";position:absolute;width:350px;height:350px;border-radius:50%;
+  right:-100px;top:-140px;background:rgba(57,223,120,.08);filter:blur(50px);
+}
+.cta-glow{
+  position:absolute;width:250px;height:250px;border-radius:50%;
+  left:-60px;bottom:-100px;background:rgba(57,223,120,.06);filter:blur(40px);
+}
+.cta-box h2{font-family:"Playfair Display",serif;font-size:clamp(36px,5vw,58px);line-height:1.05;margin-bottom:14px;position:relative;z-index:1}
+.cta-box p{color:#a8b8ae;max-width:580px;margin:0 auto 30px;font-size:15px;line-height:1.7;position:relative;z-index:1}
+
+/* ── FOOTER ── */
+footer{padding:50px 0 110px;border-top:1px solid var(--line);text-align:center;background:rgba(3,7,4,.6)}
+.footer-inner{display:flex;flex-direction:column;align-items:center;gap:16px}
+.footer-logo{height:52px;opacity:.7;transition:opacity .3s}
+.footer-logo:hover{opacity:1}
+.footer-divider{width:60px;height:1px;background:var(--line)}
+.footer-text{color:var(--muted);font-size:11px;letter-spacing:.14em;font-weight:600}
+
+/* ── MOBILE BAR ── */
+.mobile-bar{display:none}
+
+/* ── MODAL ── */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:9999;
+  display:none;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(10px);
+}
+.modal.open{display:flex}
+.modal img{max-width:92vw;max-height:82vh;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.close{
+  position:absolute;top:20px;right:22px;width:44px;height:44px;
+  border-radius:12px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);backdrop-filter:blur(10px);
+  color:white;font-size:22px;cursor:pointer;transition:all .3s;
+  display:flex;align-items:center;justify-content:center;
+}
+.close:hover{background:rgba(255,255,255,.12)}
+.caption{
+  position:absolute;bottom:28px;left:20px;right:20px;text-align:center;
+  font-weight:800;font-size:16px;color:rgba(255,255,255,.8);
+}
+
+/* ── COUNTER SECTION ── */
+.countdown-wrap{
+  display:flex;justify-content:center;gap:14px;margin-top:20px;
+}
+.cd-unit{
+  text-align:center;padding:14px 18px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  min-width:72px;
+}
+.cd-num{font-size:28px;font-weight:900;letter-spacing:-.03em;color:var(--mint)}
+.cd-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-top:2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .info-grid,.itinerary{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+  .includes{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2)::after{display:none}
+  .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
+  .gallery-card:nth-child(n){grid-column:span 1;grid-row:span 1}
+  .gallery-card:first-child,.gallery-card:last-child{grid-column:span 2}
+}
+@media(max-width:600px){
+  .topbar{padding:14px 0}
+  .topbar.scrolled{padding:10px 0}
+  .logo{height:46px}.scrolled .logo{height:40px}
+  .top-link:not(.top-link-primary){display:none}
+  .hero-content{padding-bottom:55px}
+  .hero-title{font-size:clamp(50px,15vw,80px)}
+  .hero-sub{font-size:15px}
+  .scroll-hint{display:none}
+  section{padding:80px 0}
+  .checks{grid-template-columns:1fr}
+  .includes{grid-template-columns:1fr}
+  .story,.highlight,.day,.price-card{padding:24px}
+  .gallery{grid-auto-rows:160px}
+  .countdown-wrap{gap:8px}
+  .cd-unit{padding:10px 12px;min-width:60px}
+  .cd-num{font-size:22px}
+  .stats{grid-template-columns:1fr 1fr;gap:1px;border-radius:16px}
+  .stat{padding:20px 14px}
+  .stat-num{font-size:26px}
+  .mobile-bar{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:100;
+    background:rgba(3,10,6,.95);border-top:1px solid var(--line);
+    padding:10px 14px;backdrop-filter:blur(18px);gap:10px;
+    box-shadow:0 -10px 40px rgba(0,0,0,.4);
+  }
+  .mobile-bar .btn{flex:1;padding:14px 10px;font-size:12px}
+  footer{padding-bottom:95px}
+}
+</style>
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-white">
+<body>
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+<div class="glow g3"></div>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/5566999999999?text=Olá!%20Quero%20garantir%20minha%20vaga%20para%20Barra%20do%20Garças" 
-       target="_blank" 
-       class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-full shadow-2xl transition transform hover:scale-110 flex items-center justify-center">
-        <i class="fa-brands fa-whatsapp text-3xl"></i>
+<!-- ═══ TOPBAR ═══ -->
+<nav class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a href="#">
+      <img class="logo" src="https://i.postimg.cc/JnF2F9Hw/LOGO-TRILHEIROS-Photoroom.png" alt="Trilheiros de Rondonópolis">
     </a>
+    <div class="top-links">
+      <a class="top-link" href="#roteiro">Roteiro</a>
+      <a class="top-link" href="#valores">Valores</a>
+      <a class="top-link top-link-primary" href="https://wa.me/5566984200664?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20passeio%20de%20Barra%20do%20Gar%C3%A7as." target="_blank" rel="noopener">WhatsApp ↗</a>
+    </div>
+  </div>
+</nav>
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 w-full z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2 font-black text-xl tracking-tight text-white">
-                <i class="fa-solid fa-mountain-sun text-emerald-400 text-2xl"></i>
-                <span>TRILHEIROS <span class="text-emerald-400 text-sm font-semibold block sm:inline">RONDONÓPOLIS</span></span>
-            </a>
-            <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-300">
-                <a href="#roteiro" class="hover:text-emerald-400 transition">Roteiro</a>
-                <a href="#incluso" class="hover:text-emerald-400 transition">O que inclui</a>
-                <a href="#checklist" class="hover:text-emerald-400 transition">O que levar</a>
-                <a href="#valores" class="hover:text-emerald-400 transition">Investimento</a>
-            </div>
-            <a href="#valores" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2.5 rounded-full text-sm transition shadow-lg shadow-emerald-500/20">
-                Garantir Vaga
-            </a>
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <div class="wrap">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        VAGAS LIMITADAS • SETEMBRO 2025
+      </div>
+      <h1 class="hero-title">BARRA DO<br><span>GARÇAS</span></h1>
+      <div class="hero-divider"></div>
+      <p class="hero-sub">Dois dias de natureza, aventura e paisagens incríveis com os Trilheiros de Rondonópolis.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#valores">QUERO VIVER ESSA EXPERIÊNCIA →</a>
+        <a class="btn btn-ghost" href="#roteiro">VER O ROTEIRO</a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+</header>
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+<!-- ── SOBRE ── -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">O passeio</div>
+      <h2 class="section-title">Um fim de semana para sair da rotina.</h2>
+      <p>Barra do Garças reúne trilhas, cachoeiras, cânions e paisagens do Cerrado em uma experiência pensada para quem quer viajar, explorar e viver bons momentos.</p>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Dias</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Atrações</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Cânion</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Cachoeiras</div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <article class="panel story reveal">
+        <h3>Natureza de verdade. Experiência de verdade.</h3>
+        <p>Prepare-se para dois dias de aventura passando por alguns dos cenários mais marcantes do roteiro: Santuário das Araras, Cachoeira da Samambaia, Cânion do Cipó, Cachoeira dos Amigos e Cachoeira do Sossego.</p>
+        <div class="checks">
+          <div class="check"><div class="check-icon">🚌</div> <b>Transporte</b> saindo de Rondonópolis</div>
+          <div class="check"><div class="check-icon">🏨</div> <b>Hospedagem</b> incluída</div>
+          <div class="check"><div class="check-icon">🍽️</div> <b>Almojanta</b> + café da manhã</div>
+          <div class="check"><div class="check-icon">🛡️</div> <b>Seguro de vida</b></div>
+          <div class="check"><div class="check-icon">🥾</div> <b>Equipamentos</b> de segurança</div>
+          <div class="check"><div class="check-icon">🧭</div> <b>Guias locais</b></div>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center pt-20 px-4 overflow-hidden">
-        <!-- Background Image with Overlay -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2000&auto=format&fit=crop" 
-                 alt="Barra do Garças Trilhas" 
-                 class="w-full h-full object-cover object-center opacity-30 scale-105 animate-pulse duration-1000">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
+      </article>
+      <aside class="panel highlight reveal reveal-delay-1">
+        <div>
+          <div class="date-big">05</div>
+          <div class="date-month">SETEMBRO</div>
         </div>
-
-        <div class="relative z-10 max-w-4xl mx-auto text-center mt-8">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs sm:text-sm font-bold uppercase tracking-wider mb-6">
-                <i class="fa-solid fa-compass animate-spin"></i> Próxima Saída Confirmada
+        <div>
+          <div class="place">BARRA DO GARÇAS<small>05 e 06 de setembro • saída de Rondonópolis</small></div>
+          <div class="difficulty-badge">
+            <div class="difficulty-dots">
+              <span class="active"></span><span class="active"></span><span class="active"></span><span class="active"></span><span></span>
             </div>
-
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-tight mb-6">
-                Expedição Mística <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
-                    Barra do Garças - MT
-                </span>
-            </h1>
-
-            <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
-                Venha desbravar a Serra do Roncador, cachoeiras cristalinas, o místico Discoporto e relaxar nas águas termais com o grupo mais animado do Mato Grosso.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#valores" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-8 py-4 rounded-xl text-base transition duration-300 shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-3">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> Quero Participar
-                </a>
-                <a href="#roteiro" class="w-full sm:w-auto border border-slate-700 hover:border-slate-500 bg-slate-900/60 px-8 py-4 rounded-xl text-base font-bold text-white transition flex items-center justify-center gap-2">
-                    Ver Roteiro Completo <i class="fa-solid fa-arrow-down text-sm"></i>
-                </a>
-            </div>
-
-            <!-- Stats/Highlights -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 text-left">
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl backdrop-blur">
-                    <i class="fa-solid fa-clock text-emerald-400 text-xl mb-2"></i>
-                    <p class="text-xs text-slate-400">Duração</p>
-                    <p class="font-bold text-white">Final de Semana</p>
-                </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl backdrop-blur">
-                    <i class="fa-solid fa-person-hiking text-emerald-400 text-xl mb-2"></i>
-                    <p class="text-xs text-slate-400">Nível</p>
-                    <p class="font-bold text-white">Moderado / Leve</p>
-                </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl backdrop-blur">
-                    <i class="fa-solid fa-bus text-emerald-400 text-xl mb-2"></i>
-                    <p class="text-xs text-slate-400">Embarque</p>
-                    <p class="font-bold text-white">Rondonópolis - MT</p>
-                </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl backdrop-blur">
-                    <i class="fa-solid fa-users text-emerald-400 text-xl mb-2"></i>
-                    <p class="text-xs text-slate-400">Vagas</p>
-                    <p class="font-bold text-white">Limitadas (20)</p>
-                </div>
-            </div>
+            Moderado a Difícil
+          </div>
         </div>
-    </header>
+      </aside>
+    </div>
+  </div>
+</section>
 
-    <!-- Atrativos Principais -->
-    <section id="roteiro" class="py-24 px-4 bg-slate-900/40">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">O que vamos visitar</h2>
-                <p class="text-3xl sm:text-4xl font-extrabold text-white">Aventuras inesquecíveis</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="group bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-2xl overflow-hidden transition-all duration-300">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=800&auto=format&fit=crop" 
-                             alt="Parque Estadual da Serra Azul" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/50">Cultura & Mistério</span>
-                        <h3 class="text-xl font-bold text-white mt-3 mb-2">Serra Azul & Discoporto</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            Subida com visual panorâmico, visita ao Cristo Redentor e ao famoso Discoporto, ponto de histórias e misticismo da Serra do Roncador.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="group bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-2xl overflow-hidden transition-all duration-300">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=800&auto=format&fit=crop" 
-                             alt="Cachoeiras de Barra do Garças" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/50">Natureza Pura</span>
-                        <h3 class="text-xl font-bold text-white mt-3 mb-2">Circuito de Cachoeiras</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            Banho nas quedas d'água de águas cristalinas, trilhas sombreadas na mata nativa e poços perfeitos para recarregar as energias.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="group bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-2xl overflow-hidden transition-all duration-300">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop" 
-                             alt="Parque das Águas Quentes" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/50">Relaxamento</span>
-                        <h3 class="text-xl font-bold text-white mt-3 mb-2">Águas Termais</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            Momento de relax no Parque das Águas Quentes com piscinas termais naturais com temperaturas relaxantes para fechar a trip.
-                        </p>
-                    </div>
-                </div>
-            </div>
+<!-- ── VALORES ── -->
+<section id="valores" class="price-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">Investimento</div>
+      <h2 class="section-title">Escolha a forma de pagamento.</h2>
+      <p>Valores apresentados de forma simples para você decidir e garantir sua vaga.</p>
+    </div>
+    <div class="price-grid">
+      <article class="price-card featured reveal">
+        <div class="featured-tag">MAIS PROCURADO</div>
+        <div class="price-label">PIX • INDIVIDUAL</div>
+        <div class="price">R$ 975</div>
+        <div class="price-note">por pessoa • pagamento único</div>
+        <div class="price-divider"></div>
+        <div class="price-list">
+          <div><div class="check-mark">✓</div> Transporte ida e volta</div>
+          <div><div class="check-mark">✓</div> Hospedagem</div>
+          <div><div class="check-mark">✓</div> Alimentação prevista no roteiro</div>
+          <div><div class="check-mark">✓</div> Seguro de vida</div>
+          <div><div class="check-mark">✓</div> Equipamentos de segurança</div>
+          <div><div class="check-mark">✓</div> Guias locais</div>
         </div>
-    </section>
-
-    <!-- O que está incluso -->
-    <section id="incluso" class="py-24 px-4">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Transparência</h2>
-                <p class="text-3xl sm:text-4xl font-extrabold text-white">Tudo preparado para você</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Incluso -->
-                <div class="bg-slate-900/80 border border-emerald-500/30 p-8 rounded-2xl">
-                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">
-                            <i class="fa-solid fa-check"></i>
-                        </span>
-                        O que ESTÁ incluso
-                    </h3>
-                    <ul class="space-y-4 text-slate-300 text-sm">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
-                            <span>Transporte ida e volta saindo de Rondonópolis</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
-                            <span>Hospedagem com café da manhã incluso</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
-                            <span>Acompanhamento e suporte da equipe Trilheiros de Rondonópolis</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
-                            <span>Taxas de entrada nos atrativos do cronograma</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
-                            <span>Kit Primeiros Socorros coletivo</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Não incluso -->
-                <div class="bg-slate-900/80 border border-rose-500/30 p-8 rounded-2xl">
-                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-sm">
-                            <i class="fa-solid fa-xmark"></i>
-                        </span>
-                        O que NÃO está incluso
-                    </h3>
-                    <ul class="space-y-4 text-slate-300 text-sm">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-xmark text-rose-400 mt-1"></i>
-                            <span>Almoços, jantares e bebidas não mencionadas</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-xmark text-rose-400 mt-1"></i>
-                            <span>Despesas de caráter pessoal / souvenirs</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-xmark text-rose-400 mt-1"></i>
-                            <span>Atividades extras não descritas no roteiro oficial</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      </article>
+      <article class="price-card reveal reveal-delay-1">
+        <div class="price-label">PIX • CASAL</div>
+        <div class="price">R$ 1.950</div>
+        <div class="price-note">2 pessoas • R$ 975 por pessoa</div>
+        <div class="price-divider"></div>
+        <div class="price-list">
+          <div><div class="check-mark">✓</div> Duas vagas no passeio</div>
+          <div><div class="check-mark">✓</div> Mesma experiência completa</div>
+          <div><div class="check-mark">✓</div> Consulte condições pelo WhatsApp</div>
         </div>
-    </section>
-
-    <!-- Checklist da Mochila -->
-    <section id="checklist" class="py-20 px-4 bg-slate-900/40 border-y border-slate-800/60">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-extrabold text-white mb-4">🎒 O que levar na mochila?</h2>
-            <p class="text-slate-400 mb-10 max-w-xl mx-auto text-sm">Itens essenciais para você curtir a trip com 100% de conforto e segurança.</p>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3">
-                    <i class="fa-solid fa-shoe-prints text-emerald-400 text-lg"></i>
-                    <span class="text-xs font-semibold text-slate-200">Tênis/Bota confortável</span>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3">
-                    <i class="fa-solid fa-sun text-emerald-400 text-lg"></i>
-                    <span class="text-xs font-semibold text-slate-200">Protetor solar e repelente</span>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3">
-                    <i class="fa-solid fa-bottle-water text-emerald-400 text-lg"></i>
-                    <span class="text-xs font-semibold text-slate-200">Garrafa de água (1.5L+)</span>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3">
-                    <i class="fa-solid fa-vest text-emerald-400 text-lg"></i>
-                    <span class="text-xs font-semibold text-slate-200">Roupas leves / UV</span>
-                </div>
-            </div>
+      </article>
+      <article class="price-card reveal reveal-delay-2">
+        <div class="price-label">CARTÃO DE CRÉDITO</div>
+        <div class="price">12x</div>
+        <div class="price-note">consulte as condições</div>
+        <div class="price-divider"></div>
+        <div class="price-list">
+          <div><div class="check-mark">✓</div> Pagamento no cartão</div>
+          <div><div class="check-mark">✓</div> Condições de parcelamento</div>
+          <div><div class="check-mark">✓</div> Consulte disponibilidade</div>
         </div>
-    </section>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <!-- Valores e Inscrição -->
-    <section id="valores" class="py-24 px-4 relative">
-        <div class="max-w-3xl mx-auto">
-            <div class="bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-emerald-500/50 p-8 sm:p-12 rounded-3xl text-center shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-emerald-500 text-slate-950 font-black text-xs px-6 py-1.5 uppercase rounded-bl-xl tracking-wider">
-                    Vagas Limitadas
-                </div>
-
-                <h2 class="text-2xl sm:text-4xl font-extrabold text-white mb-2">Garanta seu lugar na trilha!</h2>
-                <p class="text-slate-400 text-sm mb-8">Pagamento facilitado via PIX ou Cartão de Crédito</p>
-
-                <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-6 mb-8 inline-block w-full max-w-md">
-                    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wider">Investimento por pessoa</p>
-                    <div class="text-4xl sm:text-5xl font-black text-emerald-400 my-2">
-                        R$ Consulte
-                    </div>
-                    <p class="text-xs text-slate-400">Condições especiais para casais e grupos de amigos</p>
-                </div>
-
-                <div class="flex flex-col gap-4 max-w-md mx-auto">
-                    <a href="https://wa.me/5566999999999?text=Olá!%20Quero%20fazer%20minha%20reserva%20para%20Barra%20do%20Garças" 
-                       target="_blank"
-                       class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 px-8 rounded-xl text-lg transition duration-200 shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-3">
-                        <i class="fa-brands fa-whatsapp text-2xl"></i> Falar com Organizador
-                    </a>
-                    <span class="text-xs text-slate-500 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-lock text-xs"></i> Atendimento direto e seguro via WhatsApp
-                    </span>
-                </div>
-            </div>
+<!-- ── ROTEIRO ── -->
+<section id="roteiro">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">05 e 06 de setembro</div>
+      <h2 class="section-title">O roteiro da aventura.</h2>
+      <p>Do primeiro contato com a natureza até o último banho de cachoeira.</p>
+    </div>
+    <div class="itinerary">
+      <article class="day reveal">
+        <div class="day-tag">05 de setembro • Dia 1</div>
+        <h3>Santuário das Araras</h3>
+        <p>Primeiro dia dedicado às paisagens, natureza e atrações do roteiro de Barra do Garças.</p>
+        <div class="timeline">
+          <div class="time"><strong>SAÍDA</strong><span>Rondonópolis → Barra do Garças</span></div>
+          <div class="time"><strong>ROTEIRO</strong><span>Santuário das Araras + Cachoeira da Samambaia</span></div>
+          <div class="time"><strong>NOITE</strong><span>Hospedagem e almojanta conforme programação</span></div>
         </div>
-    </section>
+      </article>
+      <article class="day reveal reveal-delay-1">
+        <div class="day-tag">06 de setembro • Dia 2</div>
+        <h3>Cânion do Cipó</h3>
+        <p>Segundo dia com foco em aventura, água e grandes cenários naturais.</p>
+        <div class="timeline">
+          <div class="time"><strong>MANHÃ</strong><span>Cânion do Cipó</span></div>
+          <div class="time"><strong>ROTEIRO</strong><span>Cachoeira dos Amigos + Cachoeira do Sossego</span></div>
+          <div class="time"><strong>RETORNO</strong><span>Encerramento da experiência e retorno para Rondonópolis</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 py-12 px-4 text-center text-xs text-slate-500">
-        <p class="mb-2 font-semibold text-slate-400">Trilheiros de Rondonópolis • Ecoturismo & Aventura</p>
-        <p>© 2025 Trilheiros de Rondonópolis. Todos os direitos reservados.</p>
-    </footer>
+<!-- ── GALERIA ── -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">Experiências</div>
+      <h2 class="section-title">Veja o que espera por você.</h2>
+      <p>Clique nas imagens para visualizar em tela cheia.</p>
+    </div>
+    <div class="gallery reveal">
+      <div class="gallery-card" data-src="https://i.postimg.cc/wvvX62Bq/sovai360-648839155.jpg" data-caption="Cânion do Cipó">
+        <img src="https://i.postimg.cc/wvvX62Bq/sovai360-648839155.jpg" alt="Cânion do Cipó" loading="lazy">
+        <div class="gallery-info"><strong>Cânion do Cipó</strong><span>Natureza e aventura</span></div>
+      </div>
+      <div class="gallery-card" data-src="https://i.postimg.cc/vZs51bm0/barra-garcas-4.jpg" data-caption="Cânion do Cipó • Barra do Garças">
+        <img src="https://i.postimg.cc/vZs51bm0/barra-garcas-4.jpg" alt="Barra do Garças" loading="lazy">
+        <div class="gallery-info"><strong>Barra do Garças</strong><span>Paisagens do roteiro</span></div>
+      </div>
+      <div class="gallery-card" data-src="https://i.postimg.cc/nrNYSmpF/santuario-das-araras-1.jpg" data-caption="Cachoeira da Samambaia">
+        <img src="https://i.postimg.cc/nrNYSmpF/santuario-das-araras-1.jpg" alt="Cachoeira da Samambaia" loading="lazy">
+        <div class="gallery-info"><strong>Cachoeira da Samambaia</strong><span>Água e Cerrado</span></div>
+      </div>
+      <div class="gallery-card" data-src="https://i.postimg.cc/L6m5dXQY/20260613-110221.avif" data-caption="Santuário das Araras">
+        <img src="https://i.postimg.cc/L6m5dXQY/20260613-110221.avif" alt="Santuário das Araras" loading="lazy">
+        <div class="gallery-info"><strong>Santuário das Araras</strong><span>Um dos destaques da viagem</span></div>
+      </div>
+      <div class="gallery-card" data-src="https://i.postimg.cc/gJSKR5TC/santuario-das-araras-2-1.jpg" data-caption="Santuário das Araras">
+        <img src="https://i.postimg.cc/gJSKR5TC/santuario-das-araras-2-1.jpg" alt="Santuário das Araras" loading="lazy">
+        <div class="gallery-info"><strong>Santuário das Araras</strong><span>Cerrado em estado puro</span></div>
+      </div>
+      <div class="gallery-card" data-src="https://i.postimg.cc/cH2ndNjc/barra-garcas-3.jpg" data-caption="Cachoeira dos Amigos">
+        <img src="https://i.postimg.cc/cH2ndNjc/barra-garcas-3.jpg" alt="Cachoeira dos Amigos" loading="lazy">
+        <div class="gallery-info"><strong>Cachoeira dos Amigos</strong><span>Mais uma parada de natureza</span></div>
+      </div>
+      <div class="gallery-card sossego" data-src="https://i.postimg.cc/KYcLNfBx/barra-garcas-2.jpg" data-caption="Cachoeira do Sossego">
+        <img src="https://i.postimg.cc/KYcLNfBx/barra-garcas-2.jpg" alt="Cachoeira do Sossego" loading="lazy">
+        <div class="gallery-info"><strong>Cachoeira do Sossego</strong><span>Fechando o segundo dia</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ── INCLUÍDO ── -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">Incluído na experiência</div>
+      <h2 class="section-title">Você viaja com tudo organizado.</h2>
+    </div>
+    <div class="includes">
+      <div class="include reveal"><div class="include-icon">🚌</div><strong>Transporte</strong><span>Saída de Rondonópolis e retorno.</span></div>
+      <div class="include reveal reveal-delay-1"><div class="include-icon">🏨</div><strong>Hospedagem</strong><span>Hospedagem incluída no roteiro.</span></div>
+      <div class="include reveal reveal-delay-2"><div class="include-icon">🍽️</div><strong>Alimentação</strong><span>Almojanta e café da manhã.</span></div>
+      <div class="include reveal reveal-delay-1"><div class="include-icon">🛡️</div><strong>Seguro de vida</strong><span>Mais segurança durante a viagem.</span></div>
+      <div class="include reveal reveal-delay-2"><div class="include-icon">🥾</div><strong>Equipamentos</strong><span>Equipamentos de segurança.</span></div>
+      <div class="include reveal reveal-delay-3"><div class="include-icon">🧭</div><strong>Guias locais</strong><span>Condução e orientação no roteiro.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">Perguntas frequentes</div>
+      <h2 class="section-title">Antes de reservar.</h2>
+    </div>
+    <div class="faq reveal">
+      <details>
+        <summary>Qual é a data do passeio?</summary>
+        <div class="faq-body">O passeio acontece nos dias 05 e 06 de setembro de 2025.</div>
+      </details>
+      <details>
+        <summary>De onde sai o grupo?</summary>
+        <div class="faq-body">A saída é de Rondonópolis, com transporte incluído no valor.</div>
+      </details>
+      <details>
+        <summary>Qual é o nível da trilha?</summary>
+        <div class="faq-body">O roteiro é indicado como moderado a difícil. É importante ter disposição para caminhadas e terrenos irregulares.</div>
+      </details>
+      <details>
+        <summary>Quanto custa?</summary>
+        <div class="faq-body">R$ 975 por pessoa no PIX. Para casal, R$ 1.950. No cartão, consulte as condições de parcelamento pelo WhatsApp.</div>
+      </details>
+      <details>
+        <summary>O que está incluído?</summary>
+        <div class="faq-body">Transporte, hospedagem, almojanta, café da manhã, seguro de vida, equipamentos de segurança e guias locais, conforme a programação.</div>
+      </details>
+      <details>
+        <summary>Crianças podem participar?</summary>
+        <div class="faq-body">Consulte diretamente pelo WhatsApp para saber as condições de participação para menores de idade.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cta-glow"></div>
+      <div class="section-kicker">05 e 06 de setembro</div>
+      <h2>Seu próximo rolê<br>pode ser inesquecível.</h2>
+      <p>Garanta sua vaga para Barra do Garças e venha viver dois dias de aventura com os Trilheiros de Rondonópolis.</p>
+
+      <div class="countdown-wrap" id="countdown">
+        <div class="cd-unit"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Dias</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Horas</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Min</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Seg</div></div>
+      </div>
+
+      <div class="hero-actions" style="margin-top:28px">
+        <a class="btn btn-primary" href="https://wa.me/5566984200664?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20passeio%20de%20Barra%20do%20Gar%C3%A7as." target="_blank" rel="noopener">FALAR NO WHATSAPP →</a>
+        <a class="btn btn-ghost" href="#valores">VER VALORES</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <img class="footer-logo" src="https://i.postimg.cc/JnF2F9Hw/LOGO-TRILHEIROS-Photoroom.png" alt="Trilheiros de Rondonópolis">
+    <div class="footer-divider"></div>
+    <div class="footer-text">TRILHEIROS DE RONDONÓPOLIS • AVENTURA • NATUREZA • EXPERIÊNCIAS</div>
+  </div>
+</footer>
+
+<!-- ═══ MOBILE BAR ═══ -->
+<div class="mobile-bar">
+  <a class="btn btn-ghost" href="#valores">VALORES</a>
+  <a class="btn btn-primary" href="https://wa.me/5566984200664?text=Ol%C3%A1!%20Quero%20reservar%20Barra%20do%20Gar%C3%A7as." target="_blank" rel="noopener">RESERVAR AGORA</a>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal" id="modal">
+  <button class="close" id="close" aria-label="Fechar">×</button>
+  <img id="modalImg" src="" alt="">
+  <div class="caption" id="caption"></div>
+</div>
+
+<script>
+/* ── TOPBAR SCROLL ── */
+const topbar = document.getElementById('topbar');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  topbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── REVEAL ON SCROLL ── */
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => revealObs.observe(el));
+
+/* ── GALLERY MODAL ── */
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
+const caption = document.getElementById('caption');
+document.querySelectorAll('.gallery-card').forEach(card => {
+  card.addEventListener('click', () => {
+    modalImg.src = card.dataset.src;
+    modalImg.alt = card.dataset.caption;
+    caption.textContent = card.dataset.caption;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+function closeModal() {
+  modal.classList.remove('open');
+  modalImg.src = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('close').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal() });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() });
+
+/* ── COUNTDOWN ── */
+const targetDate = new Date('2025-09-05T05:00:00-04:00');
+function updateCD() {
+  const now = new Date();
+  const diff = targetDate - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '0';
+    document.getElementById('cd-hours').textContent = '0';
+    document.getElementById('cd-mins').textContent = '0';
+    document.getElementById('cd-secs').textContent = '0';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = d;
+  document.getElementById('cd-hours').textContent = h.toString().padStart(2, '0');
+  document.getElementById('cd-mins').textContent = m.toString().padStart(2, '0');
+  document.getElementById('cd-secs').textContent = s.toString().padStart(2, '0');
+}
+updateCD();
+setInterval(updateCD, 1000);
+
+/* ── SMOOTH ANCHOR ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
 </body>
 </html>
